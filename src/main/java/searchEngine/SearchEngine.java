@@ -15,11 +15,11 @@ public class SearchEngine<K> {
     private final QueryHandler<K> queryHandler;
 
     public SearchEngine(Vector<Filter> filters, Tokenizer tokenizer, Decoder decoder) {
-        Vector<Filter> filters1 = filters == null ? new Vector<>() : filters;
-        Tokenizer tokenizer1 = tokenizer == null ? new SpaceTokenizer() : tokenizer;
-        Decoder decoder1 = decoder == null ? new CommonDecoder() : decoder;
-        this.invertedIndexManager = new InvertedIndexManager<>(filters1, tokenizer1);
-        this.queryHandler = new QueryHandler<>(invertedIndexManager, decoder1);
+        filters = filters == null ? new Vector<>() : filters;
+        tokenizer = tokenizer == null ? new SpaceTokenizer() : tokenizer;
+        decoder = decoder == null ? new CommonDecoder() : decoder;
+        this.invertedIndexManager = new InvertedIndexManager<>(filters, tokenizer);
+        this.queryHandler = new QueryHandler<>(invertedIndexManager, decoder);
     }
 
     public void addData(HashMap<K, String> data) {
