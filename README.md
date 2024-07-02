@@ -1,5 +1,5 @@
 # SE_Onboard_Summer1403
-![LOGO](src/resources/image/phase01-search-3a6eddc1050ad21a189a2906f151a5fa.jpeg)
+![LOGO](src/main/resources/image/phase01-search-3a6eddc1050ad21a189a2906f151a5fa.jpeg)
 # InvertedIndex SearchEngine
 in this project we create a library that can search text very fast.
 it has three parts
@@ -12,16 +12,16 @@ this is very general that you can search widely and can customize search and tex
 
 
 ## Implementation Details
-![LOGO](src/resources/image/schema.png)
+![LOGO](src/main/resources/image/schema.png)
 
 
 
 ## How to Run
-![LOGO](src/resources/image/class.png)
-you can import searchEngine library and use this to search in texts. at first you should create a SearchEngine Object with call it's constructor.
+![LOGO](src/main/resources/image/class.png)
+you can import searchEngine library and use this to search in texts. at first, you should create a SearchEngine Object with call its constructor.
 parameters are filters and decoder and tokenizer.
-filter is for filtering text. it is a interface that filters data. it has default filter that filter numbers or 
-tokenizer is for split words, it can be by space or , and etc... . it is an interface that if you want to customize you should create this class and implement it interface 
+filter is for filtering text. it is an interface that filters data. it has default filter that filter numbers or 
+tokenizer is for split words, it can be by space or , etc... . it is an interface that if you want to customize you should create this class and implement it interface 
 decoder is for handle input query
 some words must be in text(compulsory), some words can be in text (optional) and some words shouldn't in text(forbidden).
 
@@ -32,15 +32,15 @@ also you can use search method for searching text.
 
 
 ## Results
-![LOGO](src/resources/image/test.png)
+![LOGO](src/main/resources/image/test.png)
 in this picture you can see it how works.
-at first we create an object of this class and pass default parameter.
+at first, we create an object of this class and pass default parameter.
 then feed this with some doc about clean code.
-after that search some input for example in first input we want docs that cintain "this" but don't have "code" and ome doc have this requirment.
+after that search some input for example in first input we want docs that contain "this" but don't have "code" and ome doc have this requirement.
 and another tests are visible.
 
 
-![LOGO](src/resources/image/phase01-google-05a4745de38c4a4ba898bce1375e6ddc.gif)
+![LOGO](src/main/resources/image/phase01-google-05a4745de38c4a4ba898bce1375e6ddc.gif)
 
 
 

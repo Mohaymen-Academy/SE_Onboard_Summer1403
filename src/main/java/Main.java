@@ -4,9 +4,9 @@ import java.io.*;
 import java.util.*;
 
 public class Main {
-    private final static String filesPath = "src/resources/docs";
+    private final static String filesPath = "src/main/resources/docs";
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         File[] files = FileHandler.getAllFiles(filesPath);
         HashMap<String, String> data = getData(files);
 
@@ -26,17 +26,12 @@ public class Main {
         }
     }
 
-    private static HashMap<String, String> getData(File[] files) {
+    private static HashMap<String, String> getData(File[] files) throws IOException {
         HashMap<String, String> data = new HashMap<>();
-        Arrays.stream(files).forEach(file -> {
-            String fileContent;
-            try {
-                fileContent = FileHandler.readFileContent(file);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-            data.put(file.getName(), fileContent);
-        });
+        for (File file : files) {
+            String content = FileHandler.readFileContent(file);
+            data.put(file.getName(), content);
+        }
         return data;
     }
 
