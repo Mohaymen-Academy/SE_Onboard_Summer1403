@@ -8,7 +8,6 @@ import searchEngine.tokenizers.SpaceTokenizer;
 import searchEngine.tokenizers.Tokenizer;
 
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Vector;
 
 public class SearchEngine<K> {
