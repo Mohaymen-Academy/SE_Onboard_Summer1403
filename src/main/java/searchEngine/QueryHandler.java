@@ -25,7 +25,7 @@ public class QueryHandler<K> {
         if (query.compulsories().isEmpty()) {
             if (query.optionals().isEmpty()) {
                 if (!query.forbidden().isEmpty()) {
-                    results = invertedIndexManager.getAllIDs();
+                    results = new HashSet<>(invertedIndexManager.getAllIDs());
                 }
             } else {
                 results = itemsUnion(query.optionals());
