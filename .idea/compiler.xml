@@ -9,5 +9,8 @@
         <module name="SE_Onboard_Summer1403" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="SE_Onboard_Summer1403" target="17" />
+    </bytecodeTargetLevel>
   </component>
 </project>
