@@ -7,7 +7,7 @@ import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) throws IOException {
-        File[] files = getAllFiles("src/resources");
+        File[] files = getAllFiles("src/resources/docs");
         HashMap<String, String> data = new HashMap<>();
         for (File file : files) {
             String fileContent = readFileContent(file);
