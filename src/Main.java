@@ -1,14 +1,12 @@
 import searchEngine.SearchEngine;
 
 import java.io.*;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Scanner;
+import java.util.*;
 
 public class Main {
     private final static String filesPath = "src/resources/docs";
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) {
         File[] files = FileHandler.getAllFiles(filesPath);
         HashMap<String, String> data = getData(files);
 
@@ -28,12 +26,17 @@ public class Main {
         }
     }
 
-    private static HashMap<String, String> getData(File[] files) throws IOException {
+    private static HashMap<String, String> getData(File[] files) {
         HashMap<String, String> data = new HashMap<>();
-        for (File file : files) {
-            String fileContent = FileHandler.readFileContent(file);
+        Arrays.stream(files).forEach(file -> {
+            String fileContent;
+            try {
+                fileContent = FileHandler.readFileContent(file);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
             data.put(file.getName(), fileContent);
-        }
+        });
         return data;
     }
 
