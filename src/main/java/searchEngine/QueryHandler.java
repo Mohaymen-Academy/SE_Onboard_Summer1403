@@ -1,11 +1,12 @@
 package searchEngine;
 
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableSet;
 import searchEngine.decoders.Decoder;
 import searchEngine.decoders.Query;
 
 import java.util.HashSet;
 import java.util.Optional;
-import java.util.Vector;
 
 public class QueryHandler<K> {
     private final InvertedIndexManager<K> invertedIndexManager;
@@ -16,18 +17,8 @@ public class QueryHandler<K> {
         this.decoder = decoder;
     }
 
-    private HashSet<K> removeForbidden(HashSet<K> base, HashSet<K> forbidden) {
-        HashSet<K> result = new HashSet<>();
-        for (K key : base) {
-            if (!forbidden.contains(key)) {
-                result.add(key);
-            }
-        }
-        return result;
-    }
 
-
-    public HashSet<K> getQueryResult(String queryStr) {
+    public ImmutableSet<K> getQueryResult(String queryStr) {
         Query query = decoder.decode(queryStr.toLowerCase());
         HashSet<K> results = new HashSet<>();
 
@@ -52,7 +43,19 @@ public class QueryHandler<K> {
     }
 
 
-    private HashSet<K> intersectionCompulsories(Vector<String> compulsories) {
+    private ImmutableSet<K> removeForbidden(HashSet<K> base, HashSet<K> forbidden) {
+        HashSet<K> result = new HashSet<>();
+        for (K key : base) {
+            if (!forbidden.contains(key)) {
+                result.add(key);
+            }
+        }
+        return ImmutableSet.copyOf(result);
+    }
+
+
+
+    private HashSet<K> intersectionCompulsories(ImmutableList<String> compulsories) {
         Optional<String> baseWordOptional = findBaseWord(compulsories);
 
         if (baseWordOptional.isEmpty()) {
@@ -74,8 +77,7 @@ public class QueryHandler<K> {
         return result;
     }
 
-    private Optional<String> findBaseWord(Vector<String> compulsories) {
-
+    private Optional<String> findBaseWord(ImmutableList<String> compulsories) {
         int minSize = Integer.MAX_VALUE;
         String baseWord = "";
 
@@ -96,7 +98,7 @@ public class QueryHandler<K> {
         return Optional.of(baseWord);
     }
 
-    private HashSet<K> itemsUnion(Vector<String> items) {
+    private HashSet<K> itemsUnion(ImmutableList<String> items) {
         HashSet<K> set = new HashSet<>();
         for (String item : items) {
             HashSet<K> foundKeys = invertedIndexManager.findKeysByWord(item);

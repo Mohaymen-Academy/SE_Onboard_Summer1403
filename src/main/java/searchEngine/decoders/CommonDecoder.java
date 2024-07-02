@@ -1,5 +1,7 @@
 package searchEngine.decoders;
 
+import com.google.common.collect.ImmutableList;
+
 import java.util.Vector;
 
 public class CommonDecoder implements Decoder {
@@ -12,7 +14,7 @@ public class CommonDecoder implements Decoder {
         Vector<String> forbidden = new Vector<>();
 
         for (String string : strings) {
-            if (string.equals("")) {
+            if (string.isEmpty()) {
                 continue;
             }
             switch (string.charAt(0)) {
@@ -22,6 +24,6 @@ public class CommonDecoder implements Decoder {
             }
         }
 
-        return new Query(compulsories, optionals, forbidden);
+        return new Query(ImmutableList.copyOf(compulsories), ImmutableList.copyOf(optionals), ImmutableList.copyOf(forbidden));
     }
 }

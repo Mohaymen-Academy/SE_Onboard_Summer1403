@@ -1,3 +1,4 @@
+import com.google.common.collect.ImmutableSet;
 import searchEngine.SearchEngine;
 
 import java.io.*;
@@ -21,7 +22,7 @@ public class Main {
             if (query.equals("q")) {
                 break;
             }
-            HashSet<String> result = searchEngine.search(query);
+            ImmutableSet<String> result = searchEngine.search(query);
             printResult(result);
         }
     }
@@ -35,7 +36,7 @@ public class Main {
         return data;
     }
 
-    private static void printResult(HashSet<String> results) {
+    private static void printResult(ImmutableSet<String> results) {
         if (results.isEmpty()) {
             System.out.println("nothing!");
             return;

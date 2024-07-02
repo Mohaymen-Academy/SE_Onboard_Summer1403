@@ -1,5 +1,6 @@
 package searchEngine;
 
+import com.google.common.collect.ImmutableSet;
 import searchEngine.decoders.CommonDecoder;
 import searchEngine.decoders.Decoder;
 import searchEngine.filters.Filter;
@@ -26,7 +27,7 @@ public class SearchEngine<K> {
         invertedIndexManager.addData(data);
     }
 
-    public HashSet<K> search(String query) {
+    public ImmutableSet<K> search(String query) {
         return queryHandler.getQueryResult(query);
     }
 }

@@ -1,6 +1,7 @@
 package searchEngine.decoders;
 
-import java.util.Vector;
+import com.google.common.collect.ImmutableList;
 
-public record Query(Vector<String> compulsories, Vector<String> optionals, Vector<String> forbidden) {
+public record Query(ImmutableList<String> compulsories, ImmutableList<String> optionals,
+                    ImmutableList<String> forbidden) {
 }
