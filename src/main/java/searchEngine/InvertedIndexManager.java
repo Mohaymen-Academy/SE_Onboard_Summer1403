@@ -42,9 +42,8 @@ public class InvertedIndexManager<K> {
 
     private void updateInvertedIndex(String[] words, K key) {
 
-        Arrays.stream(words).filter(w -> !w.isEmpty()).forEach(word -> {
-            invertedIndex.computeIfAbsent(word, k -> new HashSet<>()).add(key);
-        });
+        Arrays.stream(words).filter(w -> !w.isEmpty()).forEach(word ->
+                invertedIndex.computeIfAbsent(word, k -> new HashSet<>()).add(key));
     }
 
     public HashSet<K> getAllKeys() {
