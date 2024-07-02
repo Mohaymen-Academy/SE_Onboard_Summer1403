@@ -25,12 +25,11 @@ public class InvertedIndexManager<K> {
     }
 
     public void addData(HashMap<K, String> data) {
+        allKeys.addAll(data.keySet());
         for (K key : data.keySet()) {
-            allKeys.add(key);
             String str = applyFilters(data.get(key));
             updateInvertedIndex(tokenizer.tokenize(str), key);
         }
-        invertedIndex.remove("");
     }
 
     private String applyFilters(String str) {
@@ -42,6 +41,9 @@ public class InvertedIndexManager<K> {
 
     private void updateInvertedIndex(String[] words, K key) {
         for (String word : words) {
+            if (word.isEmpty()) {
+                continue;
+            }
             if (invertedIndex.containsKey(word)) {
                 invertedIndex.get(word).add(key);
             } else {
