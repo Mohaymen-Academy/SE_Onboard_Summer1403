@@ -4,6 +4,7 @@ import searchEngine.decoders.Decoder;
 import searchEngine.decoders.Query;
 
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Vector;
 
 public class QueryHandler<K> {
@@ -52,13 +53,15 @@ public class QueryHandler<K> {
 
 
     private HashSet<K> intersectionCompulsories(Vector<String> compulsories) {
-        int baseIndex = findBaseIndex(compulsories);
+        Optional<String> baseWordOptional = findBaseWord(compulsories);
 
-        if (baseIndex == -1) {
+        if (baseWordOptional.isEmpty()) {
             return new HashSet<>();
         }
 
-        HashSet<K> result = new HashSet<>(invertedIndexManager.findKeysByWord(compulsories.get(baseIndex)));
+        String baseWord = baseWordOptional.get();
+
+        HashSet<K> result = new HashSet<>(invertedIndexManager.findKeysByWord(baseWord));
 
         for (String compulsory : compulsories) {
             HashSet<K> foundKeys = invertedIndexManager.findKeysByWord(compulsory);
@@ -71,21 +74,26 @@ public class QueryHandler<K> {
         return result;
     }
 
-    private int findBaseIndex(Vector<String> compulsories) {
-        int min = Integer.MAX_VALUE;
-        int minIndex = -1;
-        for (int i = 0; i < compulsories.size(); i++) {
-            HashSet<K> foundKeys = invertedIndexManager.findKeysByWord(compulsories.get(i));
-            if (foundKeys == null) {
-                return -1;
+    private Optional<String> findBaseWord(Vector<String> compulsories) {
+
+        int minSize = Integer.MAX_VALUE;
+        String baseWord = "";
+
+        for (String compulsory : compulsories) {
+            HashSet<K> foundKeys = invertedIndexManager.findKeysByWord(compulsory);
+            
+            if (foundKeys == null || foundKeys.isEmpty()) {
+                return Optional.empty();
             }
+            
             int size = foundKeys.size();
-            if (size < min) {
-                min = size;
-                minIndex = i;
+            if (size < minSize) {
+                minSize = size;
+                baseWord = compulsory;
             }
         }
-        return minIndex;
+
+        return Optional.of(baseWord);
     }
 
     private HashSet<K> itemsUnion(Vector<String> items) {
