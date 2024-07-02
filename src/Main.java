@@ -6,13 +6,12 @@ import java.util.HashSet;
 import java.util.Scanner;
 
 public class Main {
+    private static String filesPath = "src/resources/docs";
+
     public static void main(String[] args) throws IOException {
-        File[] files = getAllFiles("src/resources/docs");
-        HashMap<String, String> data = new HashMap<>();
-        for (File file : files) {
-            String fileContent = readFileContent(file);
-            data.put(file.getName(), fileContent);
-        }
+        File[] files = FileHandler.getAllFiles(filesPath);
+        HashMap<String, String> data = getData(files);
+
 
         SearchEngine<String> searchEngine = new SearchEngine<>(null, null, null);
 
@@ -29,28 +28,17 @@ public class Main {
         }
     }
 
-    private static File[] getAllFiles(String path) {
-        File dir = new File(path);
-        File[] files = dir.listFiles();
-        if (files != null) {
-            return files;
-        } else {
-            throw new RuntimeException("path isn't a directory");
+    private static HashMap<String, String> getData(File[] files) throws IOException {
+        HashMap<String, String> data = new HashMap<>();
+        for (File file : files) {
+            String fileContent = FileHandler.readFileContent(file);
+            data.put(file.getName(), fileContent);
         }
-    }
-
-    private static String readFileContent(File file) throws IOException {
-        BufferedReader br = new BufferedReader(new FileReader(file));
-        String line;
-        StringBuilder sb = new StringBuilder();
-        while ((line = br.readLine()) != null) {
-            sb.append(line.toLowerCase()).append(" ");
-        }
-        return sb.toString();
+        return data;
     }
 
     private static void printResult(HashSet<String> results) {
-        if (results.size() == 0) {
+        if (results.isEmpty()) {
             System.out.println("nothing!");
             return;
         }
