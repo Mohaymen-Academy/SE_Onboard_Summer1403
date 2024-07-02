@@ -45,11 +45,7 @@ public class QueryHandler<K> {
 
     private ImmutableSet<K> removeForbidden(HashSet<K> base, HashSet<K> forbidden) {
         HashSet<K> result = new HashSet<>();
-        for (K ID : base) {
-            if (!forbidden.contains(ID)) {
-                result.add(ID);
-            }
-        }
+        base.stream().filter(ID -> !forbidden.contains(ID)).forEach(result::add);
         return ImmutableSet.copyOf(result);
     }
 
