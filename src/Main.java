@@ -6,7 +6,7 @@ import java.util.HashSet;
 import java.util.Scanner;
 
 public class Main {
-    private static String filesPath = "src/resources/docs";
+    private final static String filesPath = "src/resources/docs";
 
     public static void main(String[] args) throws IOException {
         File[] files = FileHandler.getAllFiles(filesPath);
