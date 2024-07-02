@@ -3,6 +3,7 @@ package searchEngine;
 import searchEngine.filters.Filter;
 import searchEngine.tokenizers.Tokenizer;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Vector;
@@ -40,18 +41,10 @@ public class InvertedIndexManager<K> {
     }
 
     private void updateInvertedIndex(String[] words, K key) {
-        for (String word : words) {
-            if (word.isEmpty()) {
-                continue;
-            }
-            if (invertedIndex.containsKey(word)) {
-                invertedIndex.get(word).add(key);
-            } else {
-                HashSet<K> keys = new HashSet<>();
-                keys.add(key);
-                invertedIndex.put(word, keys);
-            }
-        }
+
+        Arrays.stream(words).filter(w -> !w.isEmpty()).forEach(word -> {
+            invertedIndex.computeIfAbsent(word, k -> new HashSet<>()).add(key);
+        });
     }
 
     public HashSet<K> getAllKeys() {
