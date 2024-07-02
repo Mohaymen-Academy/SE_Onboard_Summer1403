@@ -25,7 +25,7 @@ public class QueryHandler<K> {
         if (query.compulsories().isEmpty()) {
             if (query.optionals().isEmpty()) {
                 if (!query.forbidden().isEmpty()) {
-                    results = invertedIndexManager.getAllKeys();
+                    results = invertedIndexManager.getAllIDs();
                 }
             } else {
                 results = itemsUnion(query.optionals());
@@ -33,21 +33,21 @@ public class QueryHandler<K> {
         } else {
             results = intersectionCompulsories(query.compulsories());
             if (!query.optionals().isEmpty()) {
-                HashSet<K> optionalKeys = itemsUnion(query.optionals());
-                results.removeIf(s -> !optionalKeys.contains(s)); // results &= optionalKey
+                HashSet<K> optionalIDs = itemsUnion(query.optionals());
+                results.removeIf(s -> !optionalIDs.contains(s)); // results &= optionalIDs
             }
         }
 
-        HashSet<K> forbiddenKeys = itemsUnion(query.forbidden());
-        return removeForbidden(results, forbiddenKeys);
+        HashSet<K> forbiddenIDs = itemsUnion(query.forbidden());
+        return removeForbidden(results, forbiddenIDs);
     }
 
 
     private ImmutableSet<K> removeForbidden(HashSet<K> base, HashSet<K> forbidden) {
         HashSet<K> result = new HashSet<>();
-        for (K key : base) {
-            if (!forbidden.contains(key)) {
-                result.add(key);
+        for (K ID : base) {
+            if (!forbidden.contains(ID)) {
+                result.add(ID);
             }
         }
         return ImmutableSet.copyOf(result);
@@ -64,11 +64,11 @@ public class QueryHandler<K> {
 
         String baseWord = baseWordOptional.get();
 
-        HashSet<K> result = new HashSet<>(invertedIndexManager.findKeysByWord(baseWord));
+        HashSet<K> result = new HashSet<>(invertedIndexManager.findIDsByWord(baseWord));
 
         for (String compulsory : compulsories) {
-            HashSet<K> foundKeys = invertedIndexManager.findKeysByWord(compulsory);
-            result.removeIf(s -> !foundKeys.contains(s)); // result &= foundKey
+            HashSet<K> foundIDs = invertedIndexManager.findIDsByWord(compulsory);
+            result.removeIf(s -> !foundIDs.contains(s)); // result &= foundIDs
             if (result.isEmpty()) {
                 break;
             }
@@ -82,13 +82,13 @@ public class QueryHandler<K> {
         String baseWord = "";
 
         for (String compulsory : compulsories) {
-            HashSet<K> foundKeys = invertedIndexManager.findKeysByWord(compulsory);
+            HashSet<K> foundIDs = invertedIndexManager.findIDsByWord(compulsory);
             
-            if (foundKeys == null || foundKeys.isEmpty()) {
+            if (foundIDs == null || foundIDs.isEmpty()) {
                 return Optional.empty();
             }
             
-            int size = foundKeys.size();
+            int size = foundIDs.size();
             if (size < minSize) {
                 minSize = size;
                 baseWord = compulsory;
@@ -101,9 +101,9 @@ public class QueryHandler<K> {
     private HashSet<K> itemsUnion(ImmutableList<String> items) {
         HashSet<K> set = new HashSet<>();
         for (String item : items) {
-            HashSet<K> foundKeys = invertedIndexManager.findKeysByWord(item);
-            if (foundKeys != null) {
-                set.addAll(foundKeys);
+            HashSet<K> foundIDs = invertedIndexManager.findIDsByWord(item);
+            if (foundIDs != null) {
+                set.addAll(foundIDs);
             }
         }
         return set;
