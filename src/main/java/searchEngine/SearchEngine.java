@@ -29,4 +29,35 @@ public class SearchEngine<K> {
     public ImmutableSet<K> search(String query) {
         return queryHandler.getQueryResult(query);
     }
+
+    public static <T> SearchEngineBuilder<T> builder() {
+        return new SearchEngineBuilder<>();
+    }
+
+    public static class SearchEngineBuilder<T> {
+        private Vector<Filter> filters;
+        private Tokenizer tokenizer;
+        private Decoder decoder;
+
+        SearchEngineBuilder() {}
+
+        public SearchEngineBuilder<T> filters(Vector<Filter> filters) {
+            this.filters = filters;
+            return this;
+        }
+
+        public SearchEngineBuilder<T> tokenizer(Tokenizer tokenizer) {
+            this.tokenizer = tokenizer;
+            return this;
+        }
+
+        public SearchEngineBuilder<T> decoder(Decoder decoder) {
+            this.decoder = decoder;
+            return this;
+        }
+
+        public SearchEngine<T> build() {
+            return new SearchEngine<>(this.filters, this.tokenizer, this.decoder);
+        }
+    }
 }

@@ -1,5 +1,7 @@
 import com.google.common.collect.ImmutableSet;
 import searchEngine.SearchEngine;
+import searchEngine.decoders.CommonDecoder;
+import searchEngine.tokenizers.SpaceTokenizer;
 
 import java.io.*;
 import java.util.*;
@@ -12,7 +14,9 @@ public class Main {
         HashMap<String, String> data = getData(files);
 
 
-        SearchEngine<String> searchEngine = new SearchEngine<>(null, null, null);
+        SearchEngine<String> searchEngine = SearchEngine.<String>builder()
+                .tokenizer(new SpaceTokenizer())
+                .decoder(new CommonDecoder()).build();
 
         searchEngine.addData(data);
 
