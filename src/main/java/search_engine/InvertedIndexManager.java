@@ -13,24 +13,24 @@ public class InvertedIndexManager<K> {
     private final HashMap<String, HashSet<K>> invertedIndex;
     private final Vector<Filter> filters;
     private final Tokenizer tokenizer;
-    private final HashSet<K> allIDs;
+    private final HashSet<K> allIds;
 
     public InvertedIndexManager(Vector<Filter> filters, Tokenizer tokenizer) {
         invertedIndex = new HashMap<>();
         this.tokenizer = tokenizer;
         this.filters = filters;
-        this.allIDs = new HashSet<>();
+        this.allIds = new HashSet<>();
     }
 
-    public HashSet<K> findIDsByWord(String word) {
+    public HashSet<K> findIdsByWord(String word) {
         return invertedIndex.get(word);
     }
 
     public void addData(HashMap<K, String> data) {
-        allIDs.addAll(data.keySet());
-        for (K ID : data.keySet()) {
-            String str = applyFilters(data.get(ID));
-            updateInvertedIndex(tokenizer.tokenize(str), ID);
+        allIds.addAll(data.keySet());
+        for (K id : data.keySet()) {
+            String str = applyFilters(data.get(id));
+            updateInvertedIndex(tokenizer.tokenize(str), id);
         }
     }
 
@@ -41,12 +41,12 @@ public class InvertedIndexManager<K> {
         return str;
     }
 
-    private void updateInvertedIndex(String[] words, K ID) {
+    private void updateInvertedIndex(String[] words, K id) {
         Arrays.stream(words).filter(w -> !w.isEmpty()).forEach(word ->
-                invertedIndex.computeIfAbsent(word, k -> new HashSet<>()).add(ID));
+                invertedIndex.computeIfAbsent(word, k -> new HashSet<>()).add(id));
     }
 
-    public ImmutableSet<K> getAllIDs() {
-        return ImmutableSet.copyOf(allIDs);
+    public ImmutableSet<K> getAllIds() {
+        return ImmutableSet.copyOf(allIds);
     }
 }
