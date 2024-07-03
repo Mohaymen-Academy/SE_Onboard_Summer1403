@@ -1,9 +1,9 @@
-package searchEngine;
+package search_engine;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
-import searchEngine.decoders.Decoder;
-import searchEngine.decoders.Query;
+import search_engine.decoders.Decoder;
+import search_engine.decoders.Query;
 
 import java.util.HashSet;
 import java.util.Optional;

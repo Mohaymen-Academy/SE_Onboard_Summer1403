@@ -1,8 +1,8 @@
-package searchEngine;
+package search_engine;
 
 import com.google.common.collect.ImmutableSet;
-import searchEngine.filters.Filter;
-import searchEngine.tokenizers.Tokenizer;
+import search_engine.filters.Filter;
+import search_engine.tokenizers.Tokenizer;
 
 import java.util.Arrays;
 import java.util.HashMap;

@@ -1,4 +1,4 @@
-package searchEngine.filters;
+package search_engine.filters;
 
 public class NumberFilter implements Filter {
     @Override

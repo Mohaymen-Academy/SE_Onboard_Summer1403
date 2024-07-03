@@ -1,4 +1,4 @@
-package searchEngine.decoders;
+package search_engine.decoders;
 
 import com.google.common.collect.ImmutableList;
 

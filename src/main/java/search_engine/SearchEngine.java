@@ -1,11 +1,11 @@
-package searchEngine;
+package search_engine;
 
 import com.google.common.collect.ImmutableSet;
-import searchEngine.decoders.CommonDecoder;
-import searchEngine.decoders.Decoder;
-import searchEngine.filters.Filter;
-import searchEngine.tokenizers.SpaceTokenizer;
-import searchEngine.tokenizers.Tokenizer;
+import search_engine.decoders.CommonDecoder;
+import search_engine.decoders.Decoder;
+import search_engine.filters.Filter;
+import search_engine.tokenizers.SpaceTokenizer;
+import search_engine.tokenizers.Tokenizer;
 
 import java.util.HashMap;
 import java.util.Vector;

@@ -1,4 +1,4 @@
-package searchEngine.tokenizers;
+package search_engine.tokenizers;
 
 public class CommaTokenizer implements Tokenizer {
     @Override

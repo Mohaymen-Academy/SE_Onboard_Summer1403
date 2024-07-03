@@ -1,7 +1,7 @@
 import com.google.common.collect.ImmutableSet;
-import searchEngine.SearchEngine;
-import searchEngine.decoders.CommonDecoder;
-import searchEngine.tokenizers.SpaceTokenizer;
+import search_engine.SearchEngine;
+import search_engine.decoders.CommonDecoder;
+import search_engine.tokenizers.SpaceTokenizer;
 
 import java.io.*;
 import java.util.*;
