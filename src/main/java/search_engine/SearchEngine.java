@@ -23,7 +23,9 @@ public class SearchEngine<K> {
     }
 
     public void addData(HashMap<K, String> data) {
-        invertedIndexManager.addData(data);
+        if (data != null) {
+            invertedIndexManager.addData(data);
+        }
     }
 
     public ImmutableSet<K> search(String query) {
