@@ -1,4 +1,3 @@
-import com.google.common.collect.ImmutableSet;
 import search_engine.Document;
 import search_engine.SearchEngine;
 import search_engine.queryDecoders.CommonQueryDecoder;
@@ -26,7 +25,7 @@ public class Main {
         String query;
         while (!(query = scanner.nextLine()).equals("q")) {
             Set<String> result = searchEngine.search(query);
-            printResult(result);
+            printSet(result);
         }
     }
 
@@ -48,13 +47,11 @@ public class Main {
         return content.toLowerCase().replaceAll("\n", " ");
     }
 
-    private static void printResult(ImmutableSet<String> results) {
-        if (results.isEmpty()) {
+    private static void printSet(Set<String> set) {
+        if (set == null || set.isEmpty()) {
             System.out.println("nothing!");
             return;
         }
-        for (String str : results) {
-            System.out.println(str);
-        }
+        set.forEach(System.out::println);
     }
 }
