@@ -13,12 +13,12 @@ import java.util.stream.Collectors;
 
 public class SearchEngine {
     private final Map<String, Set<String>> invertedIndex;
+    private final List<Document> docs;
     private final List<Filter> filters;
     private final Tokenizer tokenizer;
-    private final List<Document> docs;
     private final QueryDecoder decoder;
 
-    public SearchEngine(List<Filter> filters, Tokenizer tokenizer, QueryDecoder decoder) {
+    private SearchEngine(List<Filter> filters, Tokenizer tokenizer, QueryDecoder decoder) {
         this.filters = filters == null ? new ArrayList<>() : filters;
         this.tokenizer = tokenizer == null ? new SpaceTokenizer() : tokenizer;
         this.decoder = decoder == null ? new CommonQueryDecoder() : decoder;
@@ -43,16 +43,16 @@ public class SearchEngine {
         return content;
     }
 
-    public void indexDocument(List<String> words, String id) {
-        words.stream().filter(w -> !w.isEmpty()).forEach(word -> invertedIndex.computeIfAbsent(word, k -> new HashSet<>()).add(id));
+    private void indexDocument(List<String> words, String id) {
+        words.stream().filter(word -> !word.isEmpty()).forEach(word -> invertedIndex.computeIfAbsent(word, k -> new HashSet<>()).add(id));
     }
 
     public ImmutableSet<String> search(String strQuery) {
         Query query = decoder.decode(strQuery);
-        return ImmutableSet.copyOf(getQueryResult(query));
+        return ImmutableSet.copyOf(handleQuery(query));
     }
 
-    public Set<String> getQueryResult(Query query) {
+    private Set<String> handleQuery(Query query) {
         Set<String> results = new HashSet<>();
 
         if (query.includes().isEmpty()) {
@@ -61,7 +61,7 @@ public class SearchEngine {
                     results = docs.stream().map(Document::getId).collect(Collectors.toSet());
             } else results = itemsUnion(query.optionals());
         } else {
-                results = intersectionCompulsories(query.includes());
+                results = intersectionIncludes(query.includes());
                 if (!query.optionals().isEmpty()) {
                     Set<String> optionalIds = itemsUnion(query.optionals());
                     results.removeIf(s -> !optionalIds.contains(s)); // results &= optionalIds
@@ -78,7 +78,7 @@ public class SearchEngine {
         return new HashSet<>(result);
     }
 
-    private Set<String> intersectionCompulsories(List<String> includes) {
+    private Set<String> intersectionIncludes(List<String> includes) {
         Optional<String> baseWordOptional = findBaseWord(includes);
 
         if (baseWordOptional.isEmpty()) return new HashSet<>();
@@ -100,15 +100,15 @@ public class SearchEngine {
         int minSize = Integer.MAX_VALUE;
         String baseWord = "";
 
-        for (String compulsory : includes) {
-            Set<String> foundIds = invertedIndex.get(compulsory);
+        for (String include : includes) {
+            Set<String> foundIds = invertedIndex.get(include);
 
             if (foundIds == null || foundIds.isEmpty()) return Optional.empty();
 
             int size = foundIds.size();
             if (size < minSize) {
                 minSize = size;
-                baseWord = compulsory;
+                baseWord = include;
             }
         }
 
