@@ -34,9 +34,14 @@ public class Main {
         HashMap<String, String> data = new HashMap<>();
         for (File file : files) {
             String content = FileUtilities.readFileContent(file);
-            data.put(file.getName(), content);
+            String normalizedContent = normalizeStr(content);
+            data.put(file.getName(), normalizedContent);
         }
         return data;
+    }
+
+    private static String normalizeStr(String content) {
+        return content.toLowerCase().replaceAll("\n", " ");
     }
 
     private static void printResult(ImmutableSet<String> results) {
