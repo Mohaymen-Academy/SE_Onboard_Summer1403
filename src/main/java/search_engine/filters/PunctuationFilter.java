@@ -3,7 +3,7 @@ package search_engine.filters;
 public class PunctuationFilter implements Filter {
 
     @Override
-    public String doFilter(String str) {
+    public String filter(String str) {
         return str.replaceAll("\\p{Punct}", "");
     }
 }

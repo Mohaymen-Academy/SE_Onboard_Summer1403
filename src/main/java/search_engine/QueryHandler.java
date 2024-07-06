@@ -2,23 +2,15 @@ package search_engine;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
-import search_engine.decoders.Decoder;
-import search_engine.decoders.Query;
+import search_engine.queryDecoders.QueryDecoder;
+import search_engine.queryDecoders.Query;
 
 import java.util.HashSet;
 import java.util.Optional;
 
 public class QueryHandler<K> {
-    private final InvertedIndexManager<K> invertedIndexManager;
-    private final Decoder decoder;
 
-    public QueryHandler(InvertedIndexManager<K> invertedIndexManager, Decoder decoder) {
-        this.invertedIndexManager = invertedIndexManager;
-        this.decoder = decoder;
-    }
-
-
-    public ImmutableSet<K> getQueryResult(String queryStr) {
+    public static ImmutableSet<K> getQueryResult(Query query, ) {
         Query query = decoder.decode(queryStr.toLowerCase());
         HashSet<K> results = new HashSet<>();
 

@@ -1,10 +1,9 @@
 package search_engine;
 
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import search_engine.decoders.CommonDecoder;
+import search_engine.queryDecoders.CommonQueryDecoder;
 import search_engine.tokenizers.SpaceTokenizer;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
@@ -13,7 +12,7 @@ class SearchEngineTest {
 
     SearchEngine<String> underTest = SearchEngine.<String>builder()
             .tokenizer(new SpaceTokenizer())
-            .decoder(new CommonDecoder()).build();
+            .decoder(new CommonQueryDecoder()).build();
 
 
     @BeforeEach
