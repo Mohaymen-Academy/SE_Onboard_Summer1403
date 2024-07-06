@@ -10,14 +10,14 @@ import java.util.List;
 
 class SearchEngineBuilderTest {
     @Test
-    public void buildWithoutArgument_notThrownException() {
+    public void constructor_givenNoArgument_notThrownException() {
         Assertions.assertDoesNotThrow(() -> SearchEngine.builder().build(),
                 "build with no argument shouldn't throw exception");
 
     }
 
     @Test
-    public void buildWithNullArgument_notThrownException() {
+    public void constructor_givenNullArgument_notThrownException() {
         Assertions.assertDoesNotThrow(() -> SearchEngine.builder()
                         .filters(null)
                         .queryDecoder(null)
@@ -28,7 +28,7 @@ class SearchEngineBuilderTest {
     }
 
     @Test
-    public void callConstructor_createInstance() {
+    public void constructor_givenArgs_createInstance() {
         SearchEngine searchEngine = SearchEngine.builder()
                 .filters(List.of(new NumberFilter()))
                 .queryDecoder(new CommonQueryDecoder())
