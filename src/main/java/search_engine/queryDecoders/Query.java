@@ -2,6 +2,8 @@ package search_engine.queryDecoders;
 
 import com.google.common.collect.ImmutableList;
 
-public record Query(ImmutableList<String> compulsories, ImmutableList<String> optionals,
-                    ImmutableList<String> forbidden) {
+import java.util.List;
+
+public record Query(List<String> compulsories, List<String> optionals,
+                    List<String> forbidden) {
 }

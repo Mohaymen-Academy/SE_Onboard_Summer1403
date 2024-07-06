@@ -2,16 +2,17 @@ package search_engine.queryDecoders;
 
 import com.google.common.collect.ImmutableList;
 
-import java.util.Vector;
+import java.util.ArrayList;
+import java.util.List;
 
 public class CommonQueryDecoder implements QueryDecoder {
     @Override
     public Query decode(String query) {
         String[] strings = query.split("\\s+");
 
-        Vector<String> compulsories = new Vector<>();
-        Vector<String> optionals = new Vector<>();
-        Vector<String> forbidden = new Vector<>();
+        List<String> compulsories = new ArrayList<>();
+        List<String> optionals = new ArrayList<>();
+        List<String> forbidden = new ArrayList<>();
 
         for (String string : strings) {
             if (string.isEmpty()) {

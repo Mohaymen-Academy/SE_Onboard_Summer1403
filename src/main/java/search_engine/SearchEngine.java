@@ -1,6 +1,5 @@
 package search_engine;
 
-import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 import search_engine.filters.Filter;
 import search_engine.queryDecoders.CommonQueryDecoder;
@@ -19,8 +18,8 @@ public class SearchEngine {
     private final List<Document> docs;
     private final QueryDecoder decoder;
 
-    public SearchEngine(Vector<Filter> filters, Tokenizer tokenizer, QueryDecoder decoder) {
-        this.filters = filters == null ? new Vector<>() : filters;
+    public SearchEngine(List<Filter> filters, Tokenizer tokenizer, QueryDecoder decoder) {
+        this.filters = filters == null ? new ArrayList<>() : filters;
         this.tokenizer = tokenizer == null ? new SpaceTokenizer() : tokenizer;
         this.decoder = decoder == null ? new CommonQueryDecoder() : decoder;
         docs = new ArrayList<>();
@@ -45,17 +44,16 @@ public class SearchEngine {
     }
 
     public void indexDocument(List<String> words, String id) {
-        words.stream().filter(w -> !w.isEmpty()).forEach(word -> invertedIndex.computeIfAbsent(word, k -> new HashSet<>()).add(id));
+        words.stream().filter(w -> !w.isEmpty()).forEach
+                (word -> invertedIndex.computeIfAbsent(word, k -> new HashSet<>()).add(id));
     }
 
-
-    public ImmutableSet<String> search(String strQuery) {
+    public Set<String> search(String strQuery) {
         Query query = decoder.decode(strQuery);
         return getQueryResult(query);
     }
 
-
-    public ImmutableSet<String> getQueryResult(Query query) {
+    public Set<String> getQueryResult(Query query) {
         Set<String> results = new HashSet<>();
 
         if (query.compulsories().isEmpty()) {
@@ -78,15 +76,13 @@ public class SearchEngine {
         return removeForbidden(results, forbiddenIds);
     }
 
-
     private ImmutableSet<String> removeForbidden(Set<String> base, Set<String> forbidden) {
         Set<String> result = new HashSet<>();
         base.stream().parallel().filter(id -> !forbidden.contains(id)).forEach(result::add);
         return ImmutableSet.copyOf(result.stream().sorted().toList());
     }
 
-
-    private Set<String> intersectionCompulsories(ImmutableList<String> compulsories) {
+    private Set<String> intersectionCompulsories(List<String> compulsories) {
         Optional<String> baseWordOptional = findBaseWord(compulsories);
 
         if (baseWordOptional.isEmpty()) {
@@ -108,7 +104,7 @@ public class SearchEngine {
         return result;
     }
 
-    private Optional<String> findBaseWord(ImmutableList<String> compulsories) {
+    private Optional<String> findBaseWord(List<String> compulsories) {
         int minSize = Integer.MAX_VALUE;
         String baseWord = "";
 
@@ -129,7 +125,7 @@ public class SearchEngine {
         return Optional.of(baseWord);
     }
 
-    private Set<String> itemsUnion(ImmutableList<String> items) {
+    private Set<String> itemsUnion(List<String> items) {
         Set<String> set = new HashSet<>();
         for (String item : items) {
             Set<String> foundIds = invertedIndex.get(item);
@@ -140,16 +136,15 @@ public class SearchEngine {
         return set;
     }
 
-
     public static class SearchEngineBuilder {
-        private Vector<Filter> filters;
+        private List<Filter> filters;
         private Tokenizer tokenizer;
         private QueryDecoder decoder;
 
         SearchEngineBuilder() {
         }
 
-        public SearchEngineBuilder filters(Vector<Filter> filters) {
+        public SearchEngineBuilder filters(List<Filter> filters) {
             this.filters = filters;
             return this;
         }
