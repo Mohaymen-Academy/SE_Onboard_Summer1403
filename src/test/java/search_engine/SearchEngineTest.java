@@ -10,7 +10,7 @@ import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
 class SearchEngineTest {
 
-    SearchEngine<String> underTest = SearchEngine.<String>builder()
+    SearchEngine underTest = SearchEngine.builder()
             .tokenizer(new SpaceTokenizer())
             .decoder(new CommonQueryDecoder()).build();
 
@@ -34,7 +34,7 @@ class SearchEngineTest {
 
     @Test
     public void addData_givenNullInput_notThrowException() {
-        assertDoesNotThrow(() -> underTest.addData(null),
+        assertDoesNotThrow(() -> underTest.addDocument(null),
                 "addData should not throw NullPointerException");
     }
 

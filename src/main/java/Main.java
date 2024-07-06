@@ -14,7 +14,7 @@ public class Main {
         List<Document> documents = getDocuments(files);
 
 
-        SearchEngine<String> searchEngine = SearchEngine.<String>builder()
+        SearchEngine searchEngine = SearchEngine.builder()
                 .tokenizer(new SpaceTokenizer())
                 .decoder(new CommonQueryDecoder())
                 .build();
