@@ -4,7 +4,7 @@ import search_engine.SearchEngine;
 import search_engine.queryDecoders.CommonQueryDecoder;
 import search_engine.tokenizers.SpaceTokenizer;
 
-import java.io.*;
+import java.io.File;
 import java.util.*;
 
 public class Main {
@@ -12,14 +12,14 @@ public class Main {
 
     public static void main(String[] args) {
         File[] files = FileUtilities.getFilesByDirPath(DIR_PATH);
-        Map<String, String> data = getData(files);
+        List<Document> documents = getDocuments(files);
 
 
         SearchEngine<String> searchEngine = SearchEngine.<String>builder()
                 .tokenizer(new SpaceTokenizer())
                 .decoder(new CommonQueryDecoder()).build();
 
-        searchEngine.addData(data);
+        documents.forEach(searchEngine::addDocument);
 
         Scanner scanner = new Scanner(System.in);
         while (true) {
@@ -31,15 +31,18 @@ public class Main {
         }
     }
 
-    private static Map<String, String> getData(File[] files) {
-        Map<String, String> data = new HashMap<>();
+    private static List<Document> getDocuments(File[] files) {
+        List<Document> documents = new ArrayList<>();
         for (File file : files) {
             String content = FileUtilities.readFileContent(file);
             String normalizedContent = normalizeStr(content);
-            Document document = new Document();
-            data.put(file.getName(), normalizedContent);
+            Document document = Document.builder()
+                    .id(file.getName())
+                    .content(normalizedContent)
+                    .build();
+            documents.add(document);
         }
-        return data;
+        return documents;
     }
 
     private static String normalizeStr(String content) {
