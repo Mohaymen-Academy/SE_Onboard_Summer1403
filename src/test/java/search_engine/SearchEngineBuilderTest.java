@@ -6,18 +6,11 @@ import search_engine.filters.NumberFilter;
 import search_engine.query_decoder.CommonQueryDecoder;
 import search_engine.tokenizers.SpaceTokenizer;
 
-import java.util.ArrayList;
 import java.util.List;
 
 class SearchEngineBuilderTest {
-
-    SearchEngine underTest = SearchEngine.builder()
-            .tokenizer(new SpaceTokenizer())
-            .queryDecoder(new CommonQueryDecoder()).build();
-
     @Test
     public void buildWithoutArgument_noException() {
-        SearchEngine searchEngine;
         Assertions.assertDoesNotThrow(() -> SearchEngine.builder().build(),
                 "build with no argument shouldn't throw exception");
 
@@ -25,7 +18,6 @@ class SearchEngineBuilderTest {
 
     @Test
     public void buildWithNullArgument_noException() {
-        SearchEngine searchEngine;
         Assertions.assertDoesNotThrow(() -> SearchEngine.builder()
                         .filters(null)
                         .queryDecoder(null)
