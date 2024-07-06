@@ -16,7 +16,7 @@ public class Main {
 
         SearchEngine searchEngine = SearchEngine.builder()
                 .tokenizer(new SpaceTokenizer())
-                .decoder(new CommonQueryDecoder())
+                .queryDecoder(new CommonQueryDecoder())
                 .build();
 
         documents.forEach(searchEngine::addDocument);

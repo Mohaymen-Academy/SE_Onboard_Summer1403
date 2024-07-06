@@ -129,7 +129,7 @@ public class SearchEngine {
     public static class SearchEngineBuilder {
         private List<Filter> filters;
         private Tokenizer tokenizer;
-        private QueryDecoder decoder;
+        private QueryDecoder queryDecoder;
 
         SearchEngineBuilder() {
         }
@@ -144,13 +144,13 @@ public class SearchEngine {
             return this;
         }
 
-        public SearchEngineBuilder decoder(QueryDecoder decoder) {
-            this.decoder = decoder;
+        public SearchEngineBuilder queryDecoder(QueryDecoder decoder) {
+            this.queryDecoder = decoder;
             return this;
         }
 
         public SearchEngine build() {
-            return new SearchEngine(this.filters, this.tokenizer, this.decoder);
+            return new SearchEngine(this.filters, this.tokenizer, this.queryDecoder);
         }
     }
 }
