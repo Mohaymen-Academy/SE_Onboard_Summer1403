@@ -1,4 +1,5 @@
 import com.google.common.collect.ImmutableSet;
+import search_engine.Document;
 import search_engine.SearchEngine;
 import search_engine.decoders.CommonDecoder;
 import search_engine.tokenizers.SpaceTokenizer;
@@ -35,6 +36,7 @@ public class Main {
         for (File file : files) {
             String content = FileUtilities.readFileContent(file);
             String normalizedContent = normalizeStr(content);
+            Document document = new Document();
             data.put(file.getName(), normalizedContent);
         }
         return data;
