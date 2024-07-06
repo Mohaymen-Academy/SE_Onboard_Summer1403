@@ -1,10 +1,10 @@
-package search_engine.decoders;
+package search_engine.queryDecoders;
 
 import com.google.common.collect.ImmutableList;
 
 import java.util.Vector;
 
-public class CommonDecoder implements Decoder {
+public class CommonQueryDecoder implements QueryDecoder {
     @Override
     public Query decode(String query) {
         String[] strings = query.split("\\s+");
