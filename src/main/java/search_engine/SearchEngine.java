@@ -16,7 +16,6 @@ public class SearchEngine<K> {
     private final Tokenizer tokenizer;
     private final List<Document> docs;
     private final QueryDecoder decoder;
-    //private final DocumentUtility documentUtility;
 
     public SearchEngine(Vector<Filter> filters, Tokenizer tokenizer, QueryDecoder decoder) {
         this.filters = filters == null ? new Vector<>() : filters;
@@ -24,7 +23,6 @@ public class SearchEngine<K> {
         this.decoder = decoder == null ? new CommonQueryDecoder() : decoder;
         docs = new ArrayList<>();
         invertedIndex = new HashMap<>();
-        //documentUtility = new DocumentUtility<>(filters, tokenizer);
     }
 
     public static <T> SearchEngineBuilder<T> builder() {
@@ -32,27 +30,21 @@ public class SearchEngine<K> {
     }
 
     public void addDocument(Document document) {
-        if (document == null)
-            return;
+        if (document == null) return;
         docs.add(document);
         String content = applyFilters(document.getContent());
         indexDocument(tokenizer.tokenize(content), document.getId());
     }
 
     private String applyFilters(String content) {
-        for (Filter filter : filters) {
+        for (Filter filter : filters)
             content = filter.filter(content);
-        }
         return content;
     }
 
     public void indexDocument(String[] words, String id) {
-        Arrays.stream(words).filter(w -> !w.isEmpty()).forEach(word ->
-                invertedIndex.computeIfAbsent(word, k -> new HashSet<>()).add(id));
+        Arrays.stream(words).filter(w -> !w.isEmpty()).forEach(word -> invertedIndex.computeIfAbsent(word, k -> new HashSet<>()).add(id));
     }
-
-
-
 
 
     public ImmutableSet<K> search(String query) {
@@ -60,8 +52,6 @@ public class SearchEngine<K> {
 
         return null;
     }
-
-
 
 
     public static class SearchEngineBuilder<T> {
