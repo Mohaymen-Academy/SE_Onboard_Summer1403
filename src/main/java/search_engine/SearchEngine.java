@@ -48,9 +48,9 @@ public class SearchEngine {
                 (word -> invertedIndex.computeIfAbsent(word, k -> new HashSet<>()).add(id));
     }
 
-    public Set<String> search(String strQuery) {
+    public ImmutableSet<String> search(String strQuery) {
         Query query = decoder.decode(strQuery);
-        return getQueryResult(query);
+        return ImmutableSet.copyOf(getQueryResult(query));
     }
 
     public Set<String> getQueryResult(Query query) {
@@ -76,10 +76,10 @@ public class SearchEngine {
         return removeForbidden(results, forbiddenIds);
     }
 
-    private ImmutableSet<String> removeForbidden(Set<String> base, Set<String> forbidden) {
+    private Set<String> removeForbidden(Set<String> base, Set<String> forbidden) {
         Set<String> result = new HashSet<>();
         base.stream().parallel().filter(id -> !forbidden.contains(id)).forEach(result::add);
-        return ImmutableSet.copyOf(result.stream().sorted().toList());
+        return new HashSet<>(result);
     }
 
     private Set<String> intersectionCompulsories(List<String> compulsories) {
