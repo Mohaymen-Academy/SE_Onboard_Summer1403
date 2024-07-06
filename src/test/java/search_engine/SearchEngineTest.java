@@ -7,11 +7,14 @@ import org.junit.jupiter.api.Test;
 import search_engine.decoders.CommonDecoder;
 import search_engine.tokenizers.SpaceTokenizer;
 
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+
 class SearchEngineTest {
 
     SearchEngine<String> underTest = SearchEngine.<String>builder()
             .tokenizer(new SpaceTokenizer())
             .decoder(new CommonDecoder()).build();
+
 
     @BeforeEach
     void setUp() {
@@ -21,17 +24,32 @@ class SearchEngineTest {
     void tearDown() {
     }
 
-    @Test
-    void addNullData() {
 
-        underTest.addData(null);
+    // check constructor
+
+
+
+
+
+    // check addData
+
+    @Test
+    public void addData_givenNullInput_notThrowException() {
+        assertDoesNotThrow(() -> underTest.addData(null),
+                "addData should not throw NullPointerException");
     }
+
+
+
+
+
+
+
+
+    // check search
 
     @Test
     void search() {
     }
 
-    @Test
-    void builder() {
-    }
 }
