@@ -7,10 +7,10 @@ import java.io.*;
 import java.util.*;
 
 public class Main {
-    private final static String filesPath = "src/main/resources/docs";
+    private final static String DIR_PATH = "src/main/resources/docs";
 
     public static void main(String[] args) throws IOException {
-        File[] files = FileHandler.getAllFiles(filesPath);
+        File[] files = FileUtilities.getFilesByDirPath(DIR_PATH);
         HashMap<String, String> data = getData(files);
 
 
@@ -34,7 +34,7 @@ public class Main {
     private static HashMap<String, String> getData(File[] files) throws IOException {
         HashMap<String, String> data = new HashMap<>();
         for (File file : files) {
-            String content = FileHandler.readFileContent(file);
+            String content = FileUtilities.readFileContent(file);
             data.put(file.getName(), content);
         }
         return data;

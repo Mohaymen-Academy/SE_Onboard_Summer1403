@@ -3,8 +3,8 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 
-public class FileHandler {
-    public static File[] getAllFiles(String path) {
+public class FileUtilities {
+    public static File[] getFilesByDirPath(String path) {
         File dir = new File(path);
         File[] files = dir.listFiles();
         if (files != null) {
