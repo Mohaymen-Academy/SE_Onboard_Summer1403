@@ -44,8 +44,7 @@ public class SearchEngine {
     }
 
     public void indexDocument(List<String> words, String id) {
-        words.stream().filter(w -> !w.isEmpty()).forEach
-                (word -> invertedIndex.computeIfAbsent(word, k -> new HashSet<>()).add(id));
+        words.stream().filter(w -> !w.isEmpty()).forEach(word -> invertedIndex.computeIfAbsent(word, k -> new HashSet<>()).add(id));
     }
 
     public ImmutableSet<String> search(String strQuery) {
@@ -58,19 +57,16 @@ public class SearchEngine {
 
         if (query.includes().isEmpty()) {
             if (query.optionals().isEmpty()) {
-                if (!query.excludes().isEmpty()) {
+                if (!query.excludes().isEmpty())
                     results = docs.stream().map(Document::getId).collect(Collectors.toSet());
-                }
-            } else {
-                results = itemsUnion(query.optionals());
-            }
+            } else results = itemsUnion(query.optionals());
         } else {
-            results = intersectionCompulsories(query.includes());
-            if (!query.optionals().isEmpty()) {
-                Set<String> optionalIds = itemsUnion(query.optionals());
-                results.removeIf(s -> !optionalIds.contains(s)); // results &= optionalIds
+                results = intersectionCompulsories(query.includes());
+                if (!query.optionals().isEmpty()) {
+                    Set<String> optionalIds = itemsUnion(query.optionals());
+                    results.removeIf(s -> !optionalIds.contains(s)); // results &= optionalIds
+                }
             }
-        }
 
         Set<String> excludesIds = itemsUnion(query.excludes());
         return removeExcludes(results, excludesIds);
@@ -85,9 +81,7 @@ public class SearchEngine {
     private Set<String> intersectionCompulsories(List<String> includes) {
         Optional<String> baseWordOptional = findBaseWord(includes);
 
-        if (baseWordOptional.isEmpty()) {
-            return new HashSet<>();
-        }
+        if (baseWordOptional.isEmpty()) return new HashSet<>();
 
         String baseWord = baseWordOptional.get();
 
@@ -96,9 +90,7 @@ public class SearchEngine {
         for (String compulsory : includes) {
             Set<String> foundIds = invertedIndex.get(compulsory);
             result.removeIf(s -> !foundIds.contains(s)); // result &= foundIds
-            if (result.isEmpty()) {
-                break;
-            }
+            if (result.isEmpty()) break;
         }
 
         return result;
@@ -111,9 +103,7 @@ public class SearchEngine {
         for (String compulsory : includes) {
             Set<String> foundIds = invertedIndex.get(compulsory);
 
-            if (foundIds == null || foundIds.isEmpty()) {
-                return Optional.empty();
-            }
+            if (foundIds == null || foundIds.isEmpty()) return Optional.empty();
 
             int size = foundIds.size();
             if (size < minSize) {
