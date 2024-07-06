@@ -17,16 +17,15 @@ public class Main {
 
         SearchEngine<String> searchEngine = SearchEngine.<String>builder()
                 .tokenizer(new SpaceTokenizer())
-                .decoder(new CommonQueryDecoder()).build();
+                .decoder(new CommonQueryDecoder())
+                .build();
 
         documents.forEach(searchEngine::addDocument);
 
         Scanner scanner = new Scanner(System.in);
-        while (true) {
-            String query = scanner.nextLine();
-            if (query.equals("q"))
-                break;
-            ImmutableSet<String> result = searchEngine.search(query);
+        String query;
+        while (!(query = scanner.nextLine()).equals("q")) {
+            Set<String> result = searchEngine.search(query);
             printResult(result);
         }
     }
