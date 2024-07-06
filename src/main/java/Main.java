@@ -11,7 +11,7 @@ public class Main {
 
     public static void main(String[] args) {
         File[] files = FileUtilities.getFilesByDirPath(DIR_PATH);
-        HashMap<String, String> data = getData(files);
+        Map<String, String> data = getData(files);
 
 
         SearchEngine<String> searchEngine = SearchEngine.<String>builder()
@@ -30,8 +30,8 @@ public class Main {
         }
     }
 
-    private static HashMap<String, String> getData(File[] files) {
-        HashMap<String, String> data = new HashMap<>();
+    private static Map<String, String> getData(File[] files) {
+        Map<String, String> data = new HashMap<>();
         for (File file : files) {
             String content = FileUtilities.readFileContent(file);
             String normalizedContent = normalizeStr(content);
