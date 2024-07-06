@@ -26,10 +26,6 @@ public class SearchEngine {
         invertedIndex = new HashMap<>();
     }
 
-    public static SearchEngineBuilder builder() {
-        return new SearchEngineBuilder();
-    }
-
     public void addDocument(Document document) {
         if (document == null) return;
         docs.add(document);
@@ -126,7 +122,11 @@ public class SearchEngine {
         return set;
     }
 
-    public static class SearchEngineBuilder {
+    public static SearchEngineBuilder builder() {
+        return new SearchEngineBuilder();
+    }
+
+    private static class SearchEngineBuilder {
         private List<Filter> filters;
         private Tokenizer tokenizer;
         private QueryDecoder queryDecoder;
