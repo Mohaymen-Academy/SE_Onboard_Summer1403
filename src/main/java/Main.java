@@ -1,6 +1,6 @@
 import com.google.common.collect.ImmutableSet;
 import search_engine.SearchEngine;
-import search_engine.decoders.CommonDecoder;
+import search_engine.queryDecoders.CommonQueryDecoder;
 import search_engine.tokenizers.SpaceTokenizer;
 
 import java.io.*;
@@ -16,7 +16,7 @@ public class Main {
 
         SearchEngine<String> searchEngine = SearchEngine.<String>builder()
                 .tokenizer(new SpaceTokenizer())
-                .decoder(new CommonDecoder()).build();
+                .decoder(new CommonQueryDecoder()).build();
 
         searchEngine.addData(data);
 

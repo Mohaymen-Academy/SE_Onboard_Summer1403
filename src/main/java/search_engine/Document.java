@@ -6,4 +6,9 @@ import lombok.Data;
 public class Document {
     private String id;
     private String content;
+
+
+
+
+
 }

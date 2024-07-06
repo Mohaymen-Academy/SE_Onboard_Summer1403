@@ -1,31 +1,32 @@
 package search_engine;
 
 import com.google.common.collect.ImmutableSet;
-import search_engine.decoders.CommonDecoder;
-import search_engine.decoders.Decoder;
+import search_engine.queryDecoders.CommonQueryDecoder;
+import search_engine.queryDecoders.QueryDecoder;
 import search_engine.filters.Filter;
 import search_engine.tokenizers.SpaceTokenizer;
 import search_engine.tokenizers.Tokenizer;
 
-import java.util.HashMap;
-import java.util.Vector;
+import java.util.*;
 
 public class SearchEngine<K> {
-    private final InvertedIndexManager<K> invertedIndexManager;
-    private final QueryHandler<K> queryHandler;
+    private final Map<String, List<MatchingDoc>> invertedIndex;
+    private final List<Filter> filters;
+    private final Tokenizer tokenizer;
+    private final List<Document> docs;
+    private final QueryDecoder decoder;
 
-    public SearchEngine(Vector<Filter> filters, Tokenizer tokenizer, Decoder decoder) {
-        filters = filters == null ? new Vector<>() : filters;
-        tokenizer = tokenizer == null ? new SpaceTokenizer() : tokenizer;
-        decoder = decoder == null ? new CommonDecoder() : decoder;
-        this.invertedIndexManager = new InvertedIndexManager<>(filters, tokenizer);
-        this.queryHandler = new QueryHandler<>(invertedIndexManager, decoder);
+    public SearchEngine(Vector<Filter> filters, Tokenizer tokenizer, QueryDecoder decoder) {
+        this.filters = filters == null ? new Vector<>() : filters;
+        this.tokenizer = tokenizer == null ? new SpaceTokenizer() : tokenizer;
+        this.decoder = decoder == null ? new CommonQueryDecoder() : decoder;
+        docs = new ArrayList<>();
+        invertedIndex = new HashMap<>();
     }
 
-    public void addData(HashMap<K, String> data) {
-        if (data != null) {
-            invertedIndexManager.addData(data);
-        }
+    public void addDocument(Document document) {
+        if (document != null)
+            docs.add(document);
     }
 
     public ImmutableSet<K> search(String query) {
@@ -39,7 +40,7 @@ public class SearchEngine<K> {
     public static class SearchEngineBuilder<T> {
         private Vector<Filter> filters;
         private Tokenizer tokenizer;
-        private Decoder decoder;
+        private QueryDecoder decoder;
 
         SearchEngineBuilder() {}
 
@@ -53,7 +54,7 @@ public class SearchEngine<K> {
             return this;
         }
 
-        public SearchEngineBuilder<T> decoder(Decoder decoder) {
+        public SearchEngineBuilder<T> decoder(QueryDecoder decoder) {
             this.decoder = decoder;
             return this;
         }
