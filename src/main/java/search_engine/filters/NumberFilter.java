@@ -2,7 +2,7 @@ package search_engine.filters;
 
 public class NumberFilter implements Filter {
     @Override
-    public String doFilter(String str) {
+    public String filter(String str) {
         return str.replaceAll("[+|-]?[0-9]+", "");
     }
 }
