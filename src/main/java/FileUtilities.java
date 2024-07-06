@@ -2,14 +2,16 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
 
 public class FileUtilities {
-    public static File[] getFilesByDirPath(String path) {
+    public static List<File> getFilesByDirPath(String path) {
         File dir = new File(path);
         File[] files = dir.listFiles();
         if (files == null)
             throw new RuntimeException("path isn't a directory");
-        return files;
+        return Arrays.stream(files).toList();
     }
 
     public static String readFileContent(File file) {

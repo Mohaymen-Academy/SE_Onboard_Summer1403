@@ -44,8 +44,8 @@ public class SearchEngine {
         return content;
     }
 
-    public void indexDocument(String[] words, String id) {
-        Arrays.stream(words).filter(w -> !w.isEmpty()).forEach(word -> invertedIndex.computeIfAbsent(word, k -> new HashSet<>()).add(id));
+    public void indexDocument(List<String> words, String id) {
+        words.stream().filter(w -> !w.isEmpty()).forEach(word -> invertedIndex.computeIfAbsent(word, k -> new HashSet<>()).add(id));
     }
 
 

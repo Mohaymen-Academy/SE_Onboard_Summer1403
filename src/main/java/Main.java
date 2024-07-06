@@ -10,7 +10,7 @@ public class Main {
     private final static String DIR_PATH = "src/main/resources/docs";
 
     public static void main(String[] args) {
-        File[] files = FileUtilities.getFilesByDirPath(DIR_PATH);
+        List<File> files = FileUtilities.getFilesByDirPath(DIR_PATH);
         List<Document> documents = getDocuments(files);
 
 
@@ -29,7 +29,7 @@ public class Main {
         }
     }
 
-    private static List<Document> getDocuments(File[] files) {
+    private static List<Document> getDocuments(List<File> files) {
         List<Document> documents = new ArrayList<>();
         for (File file : files) {
             String content = FileUtilities.readFileContent(file);

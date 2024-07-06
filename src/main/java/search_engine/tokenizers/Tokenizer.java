@@ -1,5 +1,7 @@
 package search_engine.tokenizers;
 
+import java.util.List;
+
 public interface Tokenizer {
-    String[] tokenize(String str);
+    List<String> tokenize(String str);
 }
