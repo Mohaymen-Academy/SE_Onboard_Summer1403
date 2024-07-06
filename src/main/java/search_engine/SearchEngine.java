@@ -2,9 +2,9 @@ package search_engine;
 
 import com.google.common.collect.ImmutableSet;
 import search_engine.filters.Filter;
-import search_engine.queryDecoder.CommonQueryDecoder;
-import search_engine.queryDecoder.Query;
-import search_engine.queryDecoder.QueryDecoder;
+import search_engine.query_decoder.CommonQueryDecoder;
+import search_engine.query_decoder.Query;
+import search_engine.query_decoder.QueryDecoder;
 import search_engine.tokenizers.SpaceTokenizer;
 import search_engine.tokenizers.Tokenizer;
 

@@ -1,6 +1,6 @@
 import search_engine.Document;
 import search_engine.SearchEngine;
-import search_engine.queryDecoder.CommonQueryDecoder;
+import search_engine.query_decoder.CommonQueryDecoder;
 import search_engine.tokenizers.SpaceTokenizer;
 
 import java.io.File;

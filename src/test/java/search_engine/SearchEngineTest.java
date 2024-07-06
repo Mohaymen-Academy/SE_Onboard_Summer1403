@@ -3,7 +3,7 @@ package search_engine;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import search_engine.queryDecoder.CommonQueryDecoder;
+import search_engine.query_decoder.CommonQueryDecoder;
 import search_engine.tokenizers.SpaceTokenizer;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;

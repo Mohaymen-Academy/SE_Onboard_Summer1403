@@ -1,4 +1,4 @@
-package search_engine.queryDecoder;
+package search_engine.query_decoder;
 
 import java.util.List;
 
