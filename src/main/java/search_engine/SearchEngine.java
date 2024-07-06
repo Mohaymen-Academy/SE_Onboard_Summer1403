@@ -126,7 +126,7 @@ public class SearchEngine {
         return new SearchEngineBuilder();
     }
 
-    private static class SearchEngineBuilder {
+    public static class SearchEngineBuilder {
         private List<Filter> filters;
         private Tokenizer tokenizer;
         private QueryDecoder queryDecoder;
