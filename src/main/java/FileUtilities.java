@@ -12,12 +12,25 @@ public class FileUtilities {
         return files;
     }
 
-    public static String readFileContent(File file) throws IOException {
-        BufferedReader br = new BufferedReader(new FileReader(file));
+    public static String readFileContent(File file) {
+        BufferedReader bufferedReader = null;
         String line;
-        StringBuilder sb = new StringBuilder();
-        while ((line = br.readLine()) != null)
-            sb.append(line.toLowerCase()).append(" ");
-        return sb.toString();
+        StringBuilder content = new StringBuilder();
+        try {
+            bufferedReader = new BufferedReader(new FileReader(file));
+            while ((line = bufferedReader.readLine()) != null)
+                content.append(line).append("\n");
+        } catch (Exception e) {
+            System.out.println("cannot read " + file.getName());
+        } finally {
+            try {
+                if (bufferedReader != null)
+                    bufferedReader.close();
+            } catch (IOException e) {
+                System.out.println("cannot close file " + file.getName());
+            }
+        }
+
+        return content.toString();
     }
 }
