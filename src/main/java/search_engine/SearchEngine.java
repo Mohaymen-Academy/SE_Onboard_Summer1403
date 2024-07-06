@@ -2,6 +2,7 @@ package search_engine;
 
 import com.google.common.collect.ImmutableSet;
 import search_engine.queryDecoders.CommonQueryDecoder;
+import search_engine.queryDecoders.Query;
 import search_engine.queryDecoders.QueryDecoder;
 import search_engine.filters.Filter;
 import search_engine.tokenizers.SpaceTokenizer;
@@ -24,14 +25,44 @@ public class SearchEngine<K> {
         invertedIndex = new HashMap<>();
     }
 
+
+
     public void addDocument(Document document) {
         if (document != null)
             docs.add(document);
+        indexDocument();
     }
 
+
+
+    public void indexDocument() {
+        // TODO index docs
+    }
+
+
+
+
+
     public ImmutableSet<K> search(String query) {
+        Query queryIn = decoder.decode(query);
+
         return queryHandler.getQueryResult(query);
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     public static <T> SearchEngineBuilder<T> builder() {
         return new SearchEngineBuilder<>();

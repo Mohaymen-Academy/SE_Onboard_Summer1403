@@ -9,16 +9,8 @@ import java.util.HashSet;
 import java.util.Optional;
 
 public class QueryHandler<K> {
-    private final InvertedIndexManager<K> invertedIndexManager;
-    private final QueryDecoder decoder;
 
-    public QueryHandler(InvertedIndexManager<K> invertedIndexManager, QueryDecoder decoder) {
-        this.invertedIndexManager = invertedIndexManager;
-        this.decoder = decoder;
-    }
-
-
-    public ImmutableSet<K> getQueryResult(String queryStr) {
+    public static ImmutableSet<K> getQueryResult(Query query, ) {
         Query query = decoder.decode(queryStr.toLowerCase());
         HashSet<K> results = new HashSet<>();
 
