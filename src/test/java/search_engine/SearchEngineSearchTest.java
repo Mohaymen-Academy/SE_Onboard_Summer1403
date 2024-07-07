@@ -197,6 +197,8 @@ public class SearchEngineSearchTest {
 
     @Test
     public void search_testcase9() {
+
+        //given
         documents.add(
                 Document.builder()
                         .id("")
@@ -204,7 +206,6 @@ public class SearchEngineSearchTest {
                                 "we can test empty id ?")
                         .build()
         );
-        //given
         SearchEngine searchEngine = SearchEngine.builder().build();
         documents.forEach(searchEngine::addDocument);
         String query = "can";

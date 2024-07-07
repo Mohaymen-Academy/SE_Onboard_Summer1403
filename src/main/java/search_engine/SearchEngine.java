@@ -35,7 +35,9 @@ public class SearchEngine {
 
     private List<String> prepareWords(String content) {
         List<String> words = tokenizer.tokenize(content);
-        return words.stream().map(this::applyFilters).toList();
+        return words.stream()
+                .map(this::applyFilters)
+                .toList();
     }
 
     private String applyFilters(String content) {
@@ -47,8 +49,7 @@ public class SearchEngine {
     private void indexDocument(String id, List<String> words) {
         words.stream()
                 .filter(word -> !word.isEmpty())
-                .forEach(word -> invertedIndex.computeIfAbsent
-                        (word, k -> new HashSet<>()).add(id));
+                .forEach(word -> invertedIndex.computeIfAbsent(word, k -> new HashSet<>()).add(id));
     }
 
     public ImmutableSet<String> search(String queryString) {
@@ -59,17 +60,16 @@ public class SearchEngine {
     private Set<String> handleQuery(Query query) {
         Set<String> results = new HashSet<>();
 
-        if (query.includes() == null || query.includes().isEmpty()) {
-            if (query.optionals().isEmpty()) {
-                if (!query.excludes().isEmpty())
-
+        if (CollectionUtils.isEmpty(query.includes())) {
+            if (CollectionUtils.isEmpty(query.optionals())) {
+                if (!CollectionUtils.isEmpty(query.excludes()))
                     results = docs.stream()
                             .map(Document::getId)
                             .collect(Collectors.toSet());
             } else results = unionSets(findMatchedDocs(query.optionals()));
         } else {
                 results = intersectIncludes(query.includes());
-                if (!query.optionals().isEmpty()) {
+                if (!CollectionUtils.isEmpty(query.optionals())) {
                     Set<String> optionalIds = unionSets(findMatchedDocs(query.optionals()));
                     results.removeIf(s -> !optionalIds.contains(s)); // results &= optionalIds
                 }
@@ -86,13 +86,19 @@ public class SearchEngine {
     }
 
     private Set<String> intersectIncludes(List<String> includes) {
-        Optional<String> baseWordOptional = findBaseWord(includes);
+        Optional<Set<String>> baseWordOptional = findBaseSet(findMatchedDocs(includes));
         if (baseWordOptional.isEmpty())
             return new HashSet<>();
-        String baseWord = baseWordOptional.get();
 
-        Set<String> result = new HashSet<>(invertedIndex.get(baseWord));
+        Set<String> result = new HashSet<>(baseWordOptional.get());
         return intersectSets(result, findMatchedDocs(includes));
+    }
+
+
+    private List<Set<String>> findMatchedDocs(List<String> items) {
+        return items.stream()
+                .map(invertedIndex::get)
+                .toList();
     }
 
     private Set<String> intersectSets(Set<String> base , List<Set<String>> sets) {
@@ -103,33 +109,6 @@ public class SearchEngine {
         }
         return base;
     }
-
-
-    private Optional<String> findBaseWord(List<String> includes) {
-        int minSize = Integer.MAX_VALUE;
-        String baseWord = "";
-
-        for (String include : includes) {
-            Set<String> foundIds = invertedIndex.get(include);
-
-            if (foundIds == null || foundIds.isEmpty()) return Optional.empty();
-
-            int size = foundIds.size();
-            if (size < minSize) {
-                minSize = size;
-                baseWord = include;
-            }
-        }
-
-        return Optional.of(baseWord);
-    }
-
-    private List<Set<String>> findMatchedDocs(List<String> items) {
-        return items.stream()
-                .map(invertedIndex::get)
-                .toList();
-    }
-
 
     private Set<String> unionSets(List<Set<String>> sets) {
 
@@ -143,8 +122,22 @@ public class SearchEngine {
     }
 
 
+    private Optional<Set<String>> findBaseSet(List<Set<String>> sets) {
+        int minSize = Integer.MAX_VALUE;
+        Set<String> baseSet = new HashSet<>();
 
+        for (Set<String> set : sets) {
+            if (CollectionUtils.isEmpty(set)) return Optional.empty();
 
+            int size = set.size();
+            if (size < minSize) {
+                minSize = size;
+                baseSet = set;
+            }
+        }
+
+        return Optional.of(baseSet);
+    }
 
 
 
