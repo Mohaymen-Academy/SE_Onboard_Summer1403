@@ -116,4 +116,60 @@ class EdgeNgramTokenizerTest {
         Assertions.assertNotNull(results);
         Assertions.assertEquals(expected, results);
     }
+
+    @Test
+    public void search_edgeNgram_testcase2() {
+        //given
+        SearchEngine searchEngine = SearchEngine.builder()
+                .tokenizer(new EdgeNgramTokenizer())
+                .build();
+        documents.forEach(searchEngine::addDocument);
+        String query = "omid";
+        Set<String> expected = ImmutableSet.of("1");
+
+        //when
+        Set<String> results = searchEngine.search(query);
+
+        //then
+        Assertions.assertNotNull(results);
+        Assertions.assertEquals(expected, results);
+    }
+
+    @Test
+    public void search_edgeNgram_testcase3() {
+        //given
+        SearchEngine searchEngine = SearchEngine.builder()
+                .tokenizer(new EdgeNgramTokenizer())
+                .build();
+        documents.forEach(searchEngine::addDocument);
+        String query = "";
+        Set<String> expected = ImmutableSet.of();
+
+        //when
+        Set<String> results = searchEngine.search(query);
+
+        //then
+        Assertions.assertNotNull(results);
+        Assertions.assertEquals(expected, results);
+    }
+
+    @Test
+    public void search_edgeNgram_testcase4() {
+        //given
+        SearchEngine searchEngine = SearchEngine.builder()
+                .tokenizer(new EdgeNgramTokenizer())
+                .build();
+        documents.forEach(searchEngine::addDocument);
+        String query = "min";
+        Set<String> expected = ImmutableSet.of();
+
+        //when
+        Set<String> results = searchEngine.search(query);
+
+        //then
+        Assertions.assertNotNull(results);
+        Assertions.assertEquals(expected, results);
+    }
+
+
 }
