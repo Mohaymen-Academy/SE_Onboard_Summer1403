@@ -65,16 +65,16 @@ public class SearchEngine {
                     results = docs.stream()
                             .map(Document::getId)
                             .collect(Collectors.toSet());
-            } else results = itemsUnion(query.optionals());
+            } else results = setsUnion(query.optionals());
         } else {
-                results = intersectionIncludes(query.includes());
+                results = intersectIncludes(query.includes());
                 if (!query.optionals().isEmpty()) {
-                    Set<String> optionalIds = itemsUnion(query.optionals());
+                    Set<String> optionalIds = setsUnion(query.optionals());
                     results.removeIf(s -> !optionalIds.contains(s)); // results &= optionalIds
                 }
             }
 
-        Set<String> excludesIds = itemsUnion(query.excludes());
+        Set<String> excludesIds = setsUnion(query.excludes());
         return removeExcludes(results, excludesIds);
     }
 
@@ -84,7 +84,10 @@ public class SearchEngine {
         return result;
     }
 
-    private Set<String> intersectionIncludes(List<String> includes) {
+    // private
+
+
+    private Set<String> intersectIncludes(List<String> includes) {
         Optional<String> baseWordOptional = findBaseWord(includes);
 
         if (baseWordOptional.isEmpty()) return new HashSet<>();
@@ -92,6 +95,7 @@ public class SearchEngine {
         String baseWord = baseWordOptional.get();
 
         Set<String> result = new HashSet<>(invertedIndex.get(baseWord));
+
 
         for (String compulsory : includes) {
             Set<String> foundIds = invertedIndex.get(compulsory);
@@ -121,15 +125,22 @@ public class SearchEngine {
         return Optional.of(baseWord);
     }
 
-    private Set<String> itemsUnion(List<String> items) {
-        Set<String> set = new HashSet<>();
-        for (String item : items) {
-            Set<String> foundIds = invertedIndex.get(item);
-            if (foundIds != null) {
-                set.addAll(foundIds);
-            }
-        }
-        return set;
+    private List<Set<String>> findMatchedDocs(List<String> items) {
+        return items.stream()
+                .map(invertedIndex::get)
+                .toList();
+    }
+
+
+    private Set<String> setsUnion(List<Set<String>> sets) {
+
+        Set<String> result = new HashSet<>();
+
+        sets.stream()
+                .filter(Objects::nonNull)
+                .forEach(result::addAll);
+
+        return result;
     }
 
     public static SearchEngineBuilder builder() {
