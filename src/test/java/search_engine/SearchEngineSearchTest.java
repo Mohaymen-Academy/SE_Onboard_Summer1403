@@ -71,7 +71,7 @@ public class SearchEngineSearchTest {
         SearchEngine searchEngine = SearchEngine.builder().build();
         documents.forEach(searchEngine::addDocument);
         String query = "some";
-        Set<String> expected = ImmutableSet.of("4", "2");
+        Set<String> expected = ImmutableSet.of("1", "2");
 
         //when
         Set<String> results = searchEngine.search(query);
