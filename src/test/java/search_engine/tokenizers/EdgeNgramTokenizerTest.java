@@ -11,8 +11,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 class EdgeNgramTokenizerTest {
 
     List<Document> documents;
@@ -58,8 +56,8 @@ class EdgeNgramTokenizerTest {
 
         documents.add(
                 Document.builder()
-                        .id("4")
-                        .content("parsa salavati")
+                        .id("6")
+                        .content("alireza")
                         .build()
         );
     }
@@ -101,20 +99,15 @@ class EdgeNgramTokenizerTest {
     }
 
 
-
-
-
-
-
     @Test
-    public void TestTokenizeWork() {
+    public void search_edgeNgram_testcase1() {
         //given
         SearchEngine searchEngine = SearchEngine.builder()
-                .tokenizer(EdgeNgramTokenizer)
+                .tokenizer(new EdgeNgramTokenizer())
                 .build();
         documents.forEach(searchEngine::addDocument);
-        String query = "";
-        Set<String> expected = ImmutableSet.of();
+        String query = "a";
+        Set<String> expected = ImmutableSet.of("2", "5", "6");
 
         //when
         Set<String> results = searchEngine.search(query);
