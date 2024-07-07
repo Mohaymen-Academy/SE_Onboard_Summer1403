@@ -46,6 +46,25 @@ public class SearchEngineSearchTest {
         );
     }
 
+
+    @Test
+    public void search_nullInput() {
+        //given
+        SearchEngine searchEngine = SearchEngine.builder().build();
+        documents.forEach(searchEngine::addDocument);
+        String query = "";
+        Set<String> expected = ImmutableSet.of();
+
+        //when
+        Set<String> results = searchEngine.search(query);
+
+        //then
+        Assertions.assertNotNull(results);
+        Assertions.assertEquals(expected, results);
+    }
+
+
+
     @Test
     public void search_testcase1() {
         //given
@@ -125,4 +144,58 @@ public class SearchEngineSearchTest {
         Assertions.assertNotNull(results);
         Assertions.assertEquals(expected, results);
     }
+
+
+    @Test
+    public void search_testcase6() {
+        //given
+        SearchEngine searchEngine = SearchEngine.builder().build();
+        documents.forEach(searchEngine::addDocument);
+        String query = "keyboard";
+        Set<String> expected = ImmutableSet.of();
+
+        //when
+        Set<String> results = searchEngine.search(query);
+
+        //then
+        Assertions.assertNotNull(results);
+        Assertions.assertEquals(expected, results);
+    }
+
+    @Test
+    public void search_testcase7() {
+        //given
+        SearchEngine searchEngine = SearchEngine.builder().build();
+        documents.forEach(searchEngine::addDocument);
+        String query = "for is";
+        Set<String> expected = ImmutableSet.of();
+
+        //when
+        Set<String> results = searchEngine.search(query);
+
+        //then
+        Assertions.assertNotNull(results);
+        Assertions.assertEquals(expected, results);
+    }
+
+
+    @Test
+    public void search_testcase8() {
+        //given
+        SearchEngine searchEngine = SearchEngine.builder().build();
+        documents.forEach(searchEngine::addDocument);
+        String query = "other test";
+        Set<String> expected = ImmutableSet.of("4");
+
+        //when
+        Set<String> results = searchEngine.search(query);
+
+        //then
+        Assertions.assertNotNull(results);
+        Assertions.assertEquals(expected, results);
+    }
+
+
+
+
 }

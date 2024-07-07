@@ -54,6 +54,7 @@ public class SearchEngine {
         if (query.includes().isEmpty()) {
             if (query.optionals().isEmpty()) {
                 if (!query.excludes().isEmpty())
+
                     results = docs.stream().map(Document::getId).collect(Collectors.toSet());
             } else results = itemsUnion(query.optionals());
         } else {
