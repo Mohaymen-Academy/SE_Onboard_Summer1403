@@ -28,7 +28,7 @@ public class Main {
         String query;
         while (!(query = scanner.nextLine()).equals("q")) {
             Set<String> result = searchEngine.search(query);
-            printSet(result);
+            printCollection(result);
         }
     }
 
