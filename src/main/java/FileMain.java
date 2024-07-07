@@ -8,7 +8,7 @@ import search_engine.tokenizers.SpaceTokenizer;
 import java.io.File;
 import java.util.*;
 
-public class Main {
+public class FileMain {
     private final static String DOCUMENTS_DIRECTORY = "src/main/resources/docs";
 
     public static void main(String[] args) {
@@ -24,12 +24,7 @@ public class Main {
 
         documents.forEach(searchEngine::addDocument);
 
-        Scanner scanner = new Scanner(System.in);
-        String query;
-        while (!(query = scanner.nextLine()).equals("q")) {
-            Set<String> result = searchEngine.search(query);
-            printCollection(result);
-        }
+        handleInputs(searchEngine);
     }
 
     private static List<Document> getDocuments(List<File> files) {
@@ -45,7 +40,17 @@ public class Main {
         return documents;
     }
 
-    private static void printCollection(Collection<String> collection) {
+    static void handleInputs(SearchEngine searchEngine) {
+        Scanner scanner = new Scanner(System.in);
+        String query;
+        while (!(query = scanner.nextLine()).equals("q")) {
+            Set<String> result = searchEngine.search(query);
+            printCollection(result);
+        }
+        scanner.close();
+    }
+
+    static void printCollection(Collection<String> collection) {
         if (CollectionUtils.isEmpty(collection)) {
             System.out.println("nothing!");
             return;
