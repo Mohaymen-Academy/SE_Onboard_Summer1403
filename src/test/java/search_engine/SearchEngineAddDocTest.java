@@ -37,7 +37,7 @@ public class SearchEngineAddDocTest {
 
         Document document = Document.builder()
                 .id("1")
-                .content("")
+                .content("clean")
                 .build();
         searchEngine.addDocument(document);
 

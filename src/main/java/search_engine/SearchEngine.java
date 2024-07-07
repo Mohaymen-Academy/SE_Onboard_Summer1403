@@ -30,7 +30,8 @@ public class SearchEngine {
     public void addDocument(Document document) {
         if (document == null) return;
         docs.add(document);
-        indexDocument(document.getId(), prepareWords(document.getContent()));
+        if (document.getContent() != null && !document.getContent().isEmpty())
+            indexDocument(document.getId(), prepareWords(document.getContent()));
     }
 
     private List<String> prepareWords(String content) {

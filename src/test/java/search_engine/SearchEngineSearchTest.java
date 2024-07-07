@@ -236,6 +236,52 @@ public class SearchEngineSearchTest {
     }
 
 
+    @Test
+    public void search_testcase11() {
+
+        //given
+        documents.add(
+                Document.builder()
+                        .id("")
+                        .content(null)
+                        .build()
+        );
+        SearchEngine searchEngine = SearchEngine.builder().build();
+        documents.forEach(searchEngine::addDocument);
+        String query = "can";
+        Set<String> expected = ImmutableSet.of();
+
+        //when
+        Set<String> results = searchEngine.search(query);
+
+        //then
+        Assertions.assertNotNull(results);
+        Assertions.assertEquals(expected, results);
+    }
+
+    @Test
+    public void search_testcase12() {
+
+        //given
+        documents.add(
+                Document.builder()
+                        .id("7")
+                        .content("")
+                        .build()
+        );
+        SearchEngine searchEngine = SearchEngine.builder().build();
+        documents.forEach(searchEngine::addDocument);
+        String query = "can";
+        Set<String> expected = ImmutableSet.of();
+
+        //when
+        Set<String> results = searchEngine.search(query);
+
+        //then
+        Assertions.assertNotNull(results);
+        Assertions.assertEquals(expected, results);
+    }
+
 
 
 }
