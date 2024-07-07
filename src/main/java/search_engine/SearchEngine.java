@@ -29,7 +29,7 @@ public class SearchEngine {
     public void addDocument(Document document) {
         if (document == null) return;
         docs.add(document);
-        indexDocument(document.getId(), prepareWords(document.getContent()),);
+        indexDocument(document.getId(), prepareWords(document.getContent()));
     }
 
     private List<String> prepareWords(String content) {
@@ -44,22 +44,27 @@ public class SearchEngine {
     }
 
     private void indexDocument(String id, List<String> words) {
-        words.stream().filter(word -> !word.isEmpty()).forEach(word -> invertedIndex.computeIfAbsent(word, k -> new HashSet<>()).add(id));
+        words.stream()
+                .filter(word -> !word.isEmpty())
+                .forEach(word -> invertedIndex.computeIfAbsent
+                        (word, k -> new HashSet<>()).add(id));
     }
 
-    public ImmutableSet<String> search(String strQuery) {
-        Query query = decoder.decode(strQuery);
+    public ImmutableSet<String> search(String queryString) {
+        Query query = decoder.decode(queryString);
         return ImmutableSet.copyOf(handleQuery(query));
     }
 
     private Set<String> handleQuery(Query query) {
         Set<String> results = new HashSet<>();
 
-        if (query.includes().isEmpty()) {
+        if (query.includes() == null || query.includes().isEmpty()) {
             if (query.optionals().isEmpty()) {
                 if (!query.excludes().isEmpty())
 
-                    results = docs.stream().map(Document::getId).collect(Collectors.toSet());
+                    results = docs.stream()
+                            .map(Document::getId)
+                            .collect(Collectors.toSet());
             } else results = itemsUnion(query.optionals());
         } else {
                 results = intersectionIncludes(query.includes());
@@ -76,7 +81,7 @@ public class SearchEngine {
     private Set<String> removeExcludes(Set<String> base, Set<String> excludes) {
         Set<String> result = new HashSet<>();
         base.stream().parallel().filter(id -> !excludes.contains(id)).forEach(result::add);
-        return new HashSet<>(result);
+        return result;
     }
 
     private Set<String> intersectionIncludes(List<String> includes) {
