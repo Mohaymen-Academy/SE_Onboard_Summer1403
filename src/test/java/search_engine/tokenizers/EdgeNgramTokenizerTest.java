@@ -75,7 +75,7 @@ class EdgeNgramTokenizerTest {
         List<String> excepted1 = List.of("o", "om", "omi", "omid");
         List<String> excepted2 = List.of("a", "al", "ali");
         List<String> excepted3 = List.of("o", "o ", "o s");
-        List<String> excepted4 = List.of("");
+        List<String> excepted4 = List.of();
 
         // when
         List<String> actual1 = tokenizer.tokenize(string1);
