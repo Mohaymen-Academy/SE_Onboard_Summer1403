@@ -195,6 +195,45 @@ public class SearchEngineSearchTest {
         Assertions.assertEquals(expected, results);
     }
 
+    @Test
+    public void search_testcase9() {
+        documents.add(
+                Document.builder()
+                        .id("")
+                        .content("hello ,\n" +
+                                "we can test empty id ?")
+                        .build()
+        );
+        //given
+        SearchEngine searchEngine = SearchEngine.builder().build();
+        documents.forEach(searchEngine::addDocument);
+        String query = "can";
+        Set<String> expected = ImmutableSet.of("");
+
+        //when
+        Set<String> results = searchEngine.search(query);
+
+        //then
+        Assertions.assertNotNull(results);
+        Assertions.assertEquals(expected, results);
+    }
+
+    @Test
+    public void search_testcase10() {
+        //given
+        SearchEngine searchEngine = SearchEngine.builder().build();
+        documents.forEach(searchEngine::addDocument);
+        String query = "+can";
+        Set<String> expected = ImmutableSet.of();
+
+        //when
+        Set<String> results = searchEngine.search(query);
+
+        //then
+        Assertions.assertNotNull(results);
+        Assertions.assertEquals(expected, results);
+    }
+
 
 
 
