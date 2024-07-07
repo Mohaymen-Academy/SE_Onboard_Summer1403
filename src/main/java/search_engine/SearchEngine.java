@@ -29,8 +29,12 @@ public class SearchEngine {
     public void addDocument(Document document) {
         if (document == null) return;
         docs.add(document);
-        String content = applyFilters(document.getContent());
-        indexDocument(tokenizer.tokenize(content), document.getId());
+        indexDocument(document.getId(), prepareWords(document.getContent()),);
+    }
+
+    private List<String> prepareWords(String content) {
+        List<String> words = tokenizer.tokenize(content);
+        return words.stream().map(this::applyFilters).toList();
     }
 
     private String applyFilters(String content) {
@@ -39,7 +43,7 @@ public class SearchEngine {
         return content;
     }
 
-    private void indexDocument(List<String> words, String id) {
+    private void indexDocument(String id, List<String> words) {
         words.stream().filter(word -> !word.isEmpty()).forEach(word -> invertedIndex.computeIfAbsent(word, k -> new HashSet<>()).add(id));
     }
 
