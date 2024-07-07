@@ -1,6 +1,7 @@
 package search_engine;
 
 import com.google.common.collect.ImmutableSet;
+import org.apache.commons.collections4.CollectionUtils;
 import search_engine.filters.Filter;
 import search_engine.query_decoder.CommonQueryDecoder;
 import search_engine.query_decoder.Query;
@@ -65,16 +66,16 @@ public class SearchEngine {
                     results = docs.stream()
                             .map(Document::getId)
                             .collect(Collectors.toSet());
-            } else results = setsUnion(query.optionals());
+            } else results = unionSets(findMatchedDocs(query.optionals()));
         } else {
                 results = intersectIncludes(query.includes());
                 if (!query.optionals().isEmpty()) {
-                    Set<String> optionalIds = setsUnion(query.optionals());
+                    Set<String> optionalIds = unionSets(findMatchedDocs(query.optionals()));
                     results.removeIf(s -> !optionalIds.contains(s)); // results &= optionalIds
                 }
             }
 
-        Set<String> excludesIds = setsUnion(query.excludes());
+        Set<String> excludesIds = unionSets(findMatchedDocs(query.excludes()));
         return removeExcludes(results, excludesIds);
     }
 
@@ -84,27 +85,25 @@ public class SearchEngine {
         return result;
     }
 
-    // private
-
-
     private Set<String> intersectIncludes(List<String> includes) {
         Optional<String> baseWordOptional = findBaseWord(includes);
-
-        if (baseWordOptional.isEmpty()) return new HashSet<>();
-
+        if (baseWordOptional.isEmpty())
+            return new HashSet<>();
         String baseWord = baseWordOptional.get();
 
         Set<String> result = new HashSet<>(invertedIndex.get(baseWord));
-
-
-        for (String compulsory : includes) {
-            Set<String> foundIds = invertedIndex.get(compulsory);
-            result.removeIf(s -> !foundIds.contains(s)); // result &= foundIds
-            if (result.isEmpty()) break;
-        }
-
-        return result;
+        return intersectSets(result, findMatchedDocs(includes));
     }
+
+    private Set<String> intersectSets(Set<String> base , List<Set<String>> sets) {
+        for (Set<String> set : sets) {
+            base.removeIf(s -> !set.contains(s)); // result &= foundIds
+            if (CollectionUtils.isEmpty(base))
+                break;
+        }
+        return base;
+    }
+
 
     private Optional<String> findBaseWord(List<String> includes) {
         int minSize = Integer.MAX_VALUE;
@@ -132,7 +131,7 @@ public class SearchEngine {
     }
 
 
-    private Set<String> setsUnion(List<Set<String>> sets) {
+    private Set<String> unionSets(List<Set<String>> sets) {
 
         Set<String> result = new HashSet<>();
 
@@ -142,6 +141,12 @@ public class SearchEngine {
 
         return result;
     }
+
+
+
+
+
+
 
     public static SearchEngineBuilder builder() {
         return new SearchEngineBuilder();
