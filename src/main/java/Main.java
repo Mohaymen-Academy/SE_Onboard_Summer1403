@@ -1,3 +1,4 @@
+import org.apache.commons.collections4.CollectionUtils;
 import search_engine.Document;
 import search_engine.SearchEngine;
 import search_engine.filters.LowerCaseFilter;
@@ -44,11 +45,11 @@ public class Main {
         return documents;
     }
 
-    private static void printSet(Set<String> set) {
-        if (set == null || set.isEmpty()) {
+    private static void printCollection(Collection<String> collection) {
+        if (CollectionUtils.isEmpty(collection)) {
             System.out.println("nothing!");
             return;
         }
-        set.forEach(System.out::println);
+        collection.forEach(System.out::println);
     }
 }
