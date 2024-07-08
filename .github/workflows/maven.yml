@@ -29,8 +29,5 @@ jobs:
       - name: Build
         run: mvn --batch-mode -DskipTests package
 
-      - name: List Test Files
-        run: find src/test/java -name "*.java"
-
       - name: Test
         run: mvn --batch-mode -Dmaven.test.failure.ignore=true test
