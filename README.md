@@ -1,3 +1,5 @@
+![](https://github.com/kolorobot/spring-boot-junit5/workflows/tests/badge.svg)
+
 # SE_Onboard_Summer1403
 ![LOGO](src/main/resources/image/phase01-search-3a6eddc1050ad21a189a2906f151a5fa.jpeg)
 # InvertedIndex SearchEngine
