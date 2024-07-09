@@ -25,6 +25,8 @@ public class FileMain {
         documents.forEach(searchEngine::addDocument);
 
         handleInputs(searchEngine);
+
+
     }
 
     private static List<Document> getDocuments(List<File> files) {

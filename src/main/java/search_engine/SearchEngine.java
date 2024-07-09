@@ -27,6 +27,10 @@ public class SearchEngine {
         invertedIndex = new HashMap<>();
     }
 
+    public static SearchEngineBuilder builder() {
+        return new SearchEngineBuilder();
+    }
+
     public void addDocument(Document document) {
         if (document == null) return;
         docs.add(document);
@@ -69,12 +73,12 @@ public class SearchEngine {
                             .collect(Collectors.toSet());
             } else results = unionSets(findMatchedDocs(query.optionals()));
         } else {
-                results = intersectIncludes(query.includes());
-                if (!CollectionUtils.isEmpty(query.optionals())) {
-                    Set<String> optionalIds = unionSets(findMatchedDocs(query.optionals()));
-                    results.removeIf(s -> !optionalIds.contains(s)); // results &= optionalIds
-                }
+            results = intersectIncludes(query.includes());
+            if (!CollectionUtils.isEmpty(query.optionals())) {
+                Set<String> optionalIds = unionSets(findMatchedDocs(query.optionals()));
+                results.removeIf(s -> !optionalIds.contains(s)); // results &= optionalIds
             }
+        }
 
         Set<String> excludesIds = unionSets(findMatchedDocs(query.excludes()));
         return removeExcludes(results, excludesIds);
@@ -95,14 +99,13 @@ public class SearchEngine {
         return intersectSets(result, findMatchedDocs(includes));
     }
 
-
     private List<Set<String>> findMatchedDocs(List<String> items) {
         return items.stream()
-                .map(invertedIndex::get)
+                .map(s -> invertedIndex.getOrDefault(s, new HashSet<>()))
                 .toList();
     }
 
-    private Set<String> intersectSets(Set<String> base , List<Set<String>> sets) {
+    private Set<String> intersectSets(Set<String> base, List<Set<String>> sets) {
         for (Set<String> set : sets) {
             base.removeIf(s -> !set.contains(s)); // result &= foundIds
             if (CollectionUtils.isEmpty(base))
@@ -122,7 +125,6 @@ public class SearchEngine {
         return result;
     }
 
-
     private Optional<Set<String>> findBaseSet(List<Set<String>> sets) {
         int minSize = Integer.MAX_VALUE;
         Set<String> baseSet = new HashSet<>();
@@ -138,12 +140,6 @@ public class SearchEngine {
         }
 
         return Optional.of(baseSet);
-    }
-
-
-
-    public static SearchEngineBuilder builder() {
-        return new SearchEngineBuilder();
     }
 
     public static class SearchEngineBuilder {

@@ -1,6 +1,8 @@
 package search_engine.tokenizers;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 public class EdgeNgramTokenizer implements Tokenizer {
@@ -11,9 +13,11 @@ public class EdgeNgramTokenizer implements Tokenizer {
     }
 
     private List<String> getPrefixes(String str) {
-        return Stream.iterate(1, i -> i + 1)
-                .limit(str.length())
-                .map(i -> str.substring(0, i))
-                .toList();
+        List<String> tokens = new ArrayList<>(str.length());
+
+        IntStream.range(0, str.length())
+                .forEach(i ->
+                        tokens.add(str.substring(0, i)));
+        return tokens;
     }
 }
