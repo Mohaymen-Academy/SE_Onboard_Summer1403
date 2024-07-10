@@ -44,13 +44,13 @@ public class FileMain {
     }
 
     static void handleInputs(SearchEngine searchEngine) {
-        Scanner scanner = new Scanner(System.in);
-        String query;
-        while (!(query = scanner.nextLine()).equals("q")) {
-            Set<String> result = searchEngine.search(query);
-            printCollection(result);
+        try (Scanner scanner = new Scanner(System.in) ) {
+            String query;
+            while (!(query = scanner.nextLine()).equals("q")) {
+                Set<String> result = searchEngine.search(query);
+                printCollection(result);
+            }
         }
-        scanner.close();
     }
 
     static void printCollection(Collection<String> collection) {
