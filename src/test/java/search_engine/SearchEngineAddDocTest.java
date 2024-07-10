@@ -1,18 +1,29 @@
 package search_engine;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import search_engine.filters.NumberFilter;
-import search_engine.filters.PunctuationFilter;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
+import search_engine.normalizers.Normalizer;
 
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.mockito.Mockito.*;
 
-public class SearchEngineAddDocTest {
+class SearchEngineAddDocTest {
+
+    @Mock
+    Normalizer normalizer;
+
+    @BeforeEach
+    public void setup() {
+        MockitoAnnotations.openMocks(this);
+    }
+
 
     @Test
-    public void addDocument_givenNullInput_notThrowException() {
+    void addDocument_givenNullInput_notThrowException() {
         //given
         SearchEngine searchEngine = SearchEngine.builder()
                 .build();
@@ -23,16 +34,14 @@ public class SearchEngineAddDocTest {
     }
 
     @Test
-    public void addDocument_givenMockFilters_invokeFilters() {
+    void addDocument_givenMockNormalizers_invokeNormalizers() {
         //given
-        NumberFilter mockNumberFilter = mock(NumberFilter.class);
-        PunctuationFilter mockPunctuationFilter = mock(PunctuationFilter.class);
-        when(mockNumberFilter.filter(anyString())).thenReturn("");
-        when(mockPunctuationFilter.filter(anyString())).thenReturn("");
+
+        when(normalizer.normalize(anyString())).thenReturn("");
 
         //when
         SearchEngine searchEngine = SearchEngine.builder()
-                .filters(List.of(mockNumberFilter, mockPunctuationFilter))
+                .normalizers(List.of(normalizer))
                 .build();
 
         Document document = Document.builder()
@@ -42,7 +51,6 @@ public class SearchEngineAddDocTest {
         searchEngine.addDocument(document);
 
         //then
-        verify(mockNumberFilter).filter(anyString());
-        verify(mockPunctuationFilter).filter(anyString());
+        verify(normalizer).normalize(anyString());
     }
 }

@@ -19,8 +19,9 @@ this is very general that you can search widely and can customize search and tex
 ## How to Run
 ![LOGO](src/main/resources/image/class.png)
 you can import search_engine library and use this to search in texts. at first, you should create a SearchEngine Object with call its constructor.
-parameters are filters and decoder and tokenizer.
-filter is for filtering text. it is an interface that filters data. it has default filter that filter numbers or 
+parameters are normalizers and decoder and tokenizer.
+normalizer is for filtering text. it is an interface that normalizers data. it has default normalizer that normalizer
+numbers or
 tokenizer is for split words, it can be by space or , etc... . it is an interface that if you want to customize you should create this class and implement it interface 
 decoder is for handle input query
 some words must be in text(compulsory), some words can be in text (optional) and some words shouldn't in text(forbidden).

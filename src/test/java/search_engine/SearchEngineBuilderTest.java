@@ -2,7 +2,7 @@ package search_engine;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import search_engine.filters.NumberFilter;
+import search_engine.normalizers.NumberNormalizer;
 import search_engine.query_decoder.CommonQueryDecoder;
 import search_engine.tokenizers.SpaceTokenizer;
 
@@ -19,7 +19,7 @@ class SearchEngineBuilderTest {
     @Test
     public void constructor_givenNullArgument_notThrownException() {
         Assertions.assertDoesNotThrow(() -> SearchEngine.builder()
-                        .filters(null)
+                        .normalizers(null)
                         .queryDecoder(null)
                         .tokenizer(null)
                         .build(),
@@ -30,7 +30,7 @@ class SearchEngineBuilderTest {
     @Test
     public void constructor_givenArgs_createInstance() {
         SearchEngine searchEngine = SearchEngine.builder()
-                .filters(List.of(new NumberFilter()))
+                .normalizers(List.of(new NumberNormalizer()))
                 .queryDecoder(new CommonQueryDecoder())
                 .tokenizer(new SpaceTokenizer())
                 .build();

@@ -1,7 +1,7 @@
 import org.apache.commons.collections4.CollectionUtils;
 import search_engine.Document;
 import search_engine.SearchEngine;
-import search_engine.filters.LowerCaseFilter;
+import search_engine.normalizers.LowerCaseNormalizer;
 import search_engine.query_decoder.CommonQueryDecoder;
 import search_engine.tokenizers.SpaceTokenizer;
 
@@ -17,7 +17,7 @@ public class FileMain {
 
 
         SearchEngine searchEngine = SearchEngine.builder()
-                .filters(List.of(new LowerCaseFilter()))
+                .normalizers(List.of(new LowerCaseNormalizer()))
                 .tokenizer(new SpaceTokenizer())
                 .queryDecoder(new CommonQueryDecoder())
                 .build();

@@ -2,7 +2,7 @@ package search_engine;
 
 import com.google.common.collect.ImmutableSet;
 import org.apache.commons.collections4.CollectionUtils;
-import search_engine.filters.Filter;
+import search_engine.normalizers.Normalizer;
 import search_engine.query_decoder.CommonQueryDecoder;
 import search_engine.query_decoder.Query;
 import search_engine.query_decoder.QueryDecoder;
@@ -15,12 +15,12 @@ import java.util.stream.Collectors;
 public class SearchEngine {
     private final Map<String, Set<String>> invertedIndex;
     private final List<Document> docs;
-    private final List<Filter> filters;
+    private final List<Normalizer> normalizers;
     private final Tokenizer tokenizer;
     private final QueryDecoder decoder;
 
-    private SearchEngine(List<Filter> filters, Tokenizer tokenizer, QueryDecoder decoder) {
-        this.filters = filters == null ? new ArrayList<>() : filters;
+    private SearchEngine(List<Normalizer> normalizers, Tokenizer tokenizer, QueryDecoder decoder) {
+        this.normalizers = normalizers == null ? new ArrayList<>() : normalizers;
         this.tokenizer = tokenizer == null ? new SpaceTokenizer() : tokenizer;
         this.decoder = decoder == null ? new CommonQueryDecoder() : decoder;
         docs = new ArrayList<>();
@@ -41,13 +41,13 @@ public class SearchEngine {
     private List<String> prepareWords(String content) {
         List<String> words = tokenizer.tokenize(content);
         return words.stream()
-                .map(this::applyFilters)
+                .map(this::applyNormalizers)
                 .toList();
     }
 
-    private String applyFilters(String content) {
-        for (Filter filter : filters)
-            content = filter.filter(content);
+    private String applyNormalizers(String content) {
+        for (Normalizer normalizer : normalizers)
+            content = normalizer.normalize(content);
         return content;
     }
 
@@ -86,7 +86,10 @@ public class SearchEngine {
 
     private Set<String> removeExcludes(Set<String> base, Set<String> excludes) {
         Set<String> result = new HashSet<>();
-        base.stream().parallel().filter(id -> !excludes.contains(id)).forEach(result::add);
+        base.stream()
+                .parallel()
+                .filter(id -> !excludes.contains(id))
+                .forEach(result::add);
         return result;
     }
 
@@ -143,15 +146,15 @@ public class SearchEngine {
     }
 
     public static class SearchEngineBuilder {
-        private List<Filter> filters;
+        private List<Normalizer> normalizers;
         private Tokenizer tokenizer;
         private QueryDecoder queryDecoder;
 
         SearchEngineBuilder() {
         }
 
-        public SearchEngineBuilder filters(List<Filter> filters) {
-            this.filters = filters;
+        public SearchEngineBuilder normalizers(List<Normalizer> normalizers) {
+            this.normalizers = normalizers;
             return this;
         }
 
@@ -166,7 +169,7 @@ public class SearchEngine {
         }
 
         public SearchEngine build() {
-            return new SearchEngine(this.filters, this.tokenizer, this.queryDecoder);
+            return new SearchEngine(this.normalizers, this.tokenizer, this.queryDecoder);
         }
     }
 }

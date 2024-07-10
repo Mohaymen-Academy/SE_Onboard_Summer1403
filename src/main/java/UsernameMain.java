@@ -1,6 +1,6 @@
 import search_engine.Document;
 import search_engine.SearchEngine;
-import search_engine.filters.LowerCaseFilter;
+import search_engine.normalizers.LowerCaseNormalizer;
 import search_engine.query_decoder.CommonQueryDecoder;
 import search_engine.tokenizers.EdgeNgramTokenizer;
 
@@ -9,7 +9,7 @@ import java.util.List;
 public class UsernameMain {
     public static void main(String[] args) {
         SearchEngine searchEngine = SearchEngine.builder()
-                .filters(List.of(new LowerCaseFilter()))
+                .normalizers(List.of(new LowerCaseNormalizer()))
                 .tokenizer(new EdgeNgramTokenizer())
                 .queryDecoder(new CommonQueryDecoder())
                 .build();
