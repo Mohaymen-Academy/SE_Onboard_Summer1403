@@ -1,12 +1,13 @@
-import org.apache.commons.collections4.CollectionUtils;
 import search_engine.Document;
+import search_engine.InputQueryUtilities;
 import search_engine.SearchEngine;
 import search_engine.filters.LowerCaseFilter;
 import search_engine.query_decoder.CommonQueryDecoder;
 import search_engine.tokenizers.SpaceTokenizer;
 
 import java.io.File;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class FileMain {
     private final static String DOCUMENTS_DIRECTORY = "src/main/resources/docs";
@@ -24,7 +25,7 @@ public class FileMain {
 
         documents.forEach(searchEngine::addDocument);
 
-        handleInputs(searchEngine);
+        InputQueryUtilities.handleInputs(searchEngine);
     }
 
     private static List<Document> getDocuments(List<File> files) {
@@ -38,23 +39,5 @@ public class FileMain {
             documents.add(document);
         }
         return documents;
-    }
-
-    static void handleInputs(SearchEngine searchEngine) {
-        Scanner scanner = new Scanner(System.in);
-        String query;
-        while (!(query = scanner.nextLine()).equals("q")) {
-            Set<String> result = searchEngine.search(query);
-            printCollection(result);
-        }
-        scanner.close();
-    }
-
-    static void printCollection(Collection<String> collection) {
-        if (CollectionUtils.isEmpty(collection)) {
-            System.out.println("nothing!");
-            return;
-        }
-        collection.forEach(System.out::println);
     }
 }
