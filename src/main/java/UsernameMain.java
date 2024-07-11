@@ -17,7 +17,7 @@ public class UsernameMain {
         List<Document> documents = createDocuments();
         documents.forEach(searchEngine::addDocument);
 
-        FileMain.handleInputs(searchEngine);
+        InputQueryUtilities.handleInputs(searchEngine);
     }
 
     private static List<Document> createDocuments() {

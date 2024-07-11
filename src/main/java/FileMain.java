@@ -24,9 +24,7 @@ public class FileMain {
 
         documents.forEach(searchEngine::addDocument);
 
-        handleInputs(searchEngine);
-
-
+        InputQueryUtilities.handleInputs(searchEngine);
     }
 
     private static List<Document> getDocuments(List<File> files) {
@@ -41,23 +39,5 @@ public class FileMain {
                 .id(file.getName())
                 .content(content)
                 .build();
-    }
-
-    static void handleInputs(SearchEngine searchEngine) {
-        try (Scanner scanner = new Scanner(System.in) ) {
-            String query;
-            while (!(query = scanner.nextLine()).equals("q")) {
-                Set<String> result = searchEngine.search(query);
-                printCollection(result);
-            }
-        }
-    }
-
-    static void printCollection(Collection<String> collection) {
-        if (CollectionUtils.isEmpty(collection)) {
-            System.out.println("nothing!");
-            return;
-        }
-        collection.forEach(System.out::println);
     }
 }
