@@ -238,7 +238,7 @@ class SearchEngineSearchTest {
         );
 
         String query = "can";
-        Set<String> expected = ImmutableSet.of();
+        Set<String> expected = ImmutableSet.of("1");
 
         //when
         Set<String> results = searchEngine.search(query);
