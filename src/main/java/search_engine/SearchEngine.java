@@ -64,9 +64,9 @@ public class SearchEngine {
     private Set<String> handleQuery(Query query) {
         Status status = query.getStatus();
         Set<String> results = new HashSet<>();
-        List<Set<String>> includesSet = convertTokensToSetOfDocsId(query.includes());
-        List<Set<String>> optionalsSet = convertTokensToSetOfDocsId(query.optionals());
-        List<Set<String>> excludesSet = convertTokensToSetOfDocsId(query.excludes());
+        List<Set<String>> includesSet = getSetsOfIdsByTokens(query.includes());
+        List<Set<String>> optionalsSet = getSetsOfIdsByTokens(query.optionals());
+        List<Set<String>> excludesSet = getSetsOfIdsByTokens(query.excludes());
 
         switch (status) {
             case JUST_EXCLUDES -> results = docs.stream().map(Document::getId).collect(Collectors.toSet());
@@ -97,10 +97,10 @@ public class SearchEngine {
     }
 
 
-    private List<Set<String>> convertTokensToSetOfDocsId(List<String> items) {
-        return items == null ?
+    private List<Set<String>> getSetsOfIdsByTokens(List<String> tokens) {
+        return tokens == null ?
                 new ArrayList<>() :
-                items.stream()
+                tokens.stream()
                         .map(this::getDocsIdByWord)
                         .toList();
     }
