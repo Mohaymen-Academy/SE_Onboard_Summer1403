@@ -5,7 +5,6 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -14,35 +13,25 @@ public class SearchEngineSearchTest {
 
     @BeforeEach
     public void setup() {
-        documents = new ArrayList<>();
-        documents.add(
+        documents = List.of(
                 Document.builder()
-                .id("1")
-                .content("some random 6 contents")
-                .build()
-        );
-
-        documents.add(
+                        .id("1")
+                        .content("some random 6 contents")
+                        .build(),
                 Document.builder()
-                .id("2")
-                .content("some random other contents")
-                .build()
-        );
-
-        documents.add(
+                        .id("2")
+                        .content("some random other contents")
+                        .build(),
                 Document.builder()
-                .id("3")
-                .content("this ,\n" +
-                        "is a test string")
-                .build()
-        );
-
-        documents.add(
+                        .id("3")
+                        .content("this ,\n" +
+                                "is a test string")
+                        .build(),
                 Document.builder()
-                .id("4")
-                .content("other test\n" +
-                        "for testing")
-                .build()
+                        .id("4")
+                        .content("other test\n" +
+                                "for testing")
+                        .build()
         );
     }
 
@@ -62,7 +51,6 @@ public class SearchEngineSearchTest {
         Assertions.assertNotNull(results);
         Assertions.assertEquals(expected, results);
     }
-
 
 
     @Test
@@ -281,7 +269,6 @@ public class SearchEngineSearchTest {
         Assertions.assertNotNull(results);
         Assertions.assertEquals(expected, results);
     }
-
 
 
 }
