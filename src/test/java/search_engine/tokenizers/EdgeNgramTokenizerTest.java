@@ -7,7 +7,6 @@ import org.junit.jupiter.api.Test;
 import search_engine.Document;
 import search_engine.SearchEngine;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -17,44 +16,27 @@ class EdgeNgramTokenizerTest {
 
     @BeforeEach
     void setUp() {
-        documents = new ArrayList<>();
-        documents.add(
+        documents = List.of(
                 Document.builder()
                         .id("1")
                         .content("omid heydari")
-                        .build()
-        );
-
-        documents.add(
+                        .build(),
                 Document.builder()
                         .id("2")
                         .content("ali sadeghi")
-                        .build()
-        );
-
-        documents.add(
+                        .build(),
                 Document.builder()
                         .id("3")
                         .content("sajjad soltanian")
-                        .build()
-        );
-
-        documents.add(
+                        .build(),
                 Document.builder()
                         .id("4")
                         .content("mohammad Aghaee")
-                        .build()
-        );
-
-        documents.add(
+                        .build(),
                 Document.builder()
                         .id("5")
                         .content("amin sharifi")
-                        .build()
-        );
-
-
-        documents.add(
+                        .build(),
                 Document.builder()
                         .id("6")
                         .content("alireza")
