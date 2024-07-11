@@ -51,6 +51,6 @@ class SearchEngineAddDocTest {
         searchEngine.addDocument(document);
 
         //then
-        verify(normalizer).normalize(anyString());
+        verify(normalizer).normalize(anyString()); 
     }
 }

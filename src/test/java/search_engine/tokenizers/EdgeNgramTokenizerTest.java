@@ -64,7 +64,7 @@ class EdgeNgramTokenizerTest {
 
 
     @Test
-    public void tokenize_givenStrings() {
+    void tokenize_givenStrings() {
         // given
         EdgeNgramTokenizer tokenizer = new EdgeNgramTokenizer();
         String string1 = "omid";
@@ -100,7 +100,7 @@ class EdgeNgramTokenizerTest {
 
 
     @Test
-    public void search_edgeNgram_testcase1() {
+    void search_edgeNgram_testcase1() {
         //given
         SearchEngine searchEngine = SearchEngine.builder()
                 .tokenizer(new EdgeNgramTokenizer())
@@ -118,7 +118,7 @@ class EdgeNgramTokenizerTest {
     }
 
     @Test
-    public void search_edgeNgram_testcase2() {
+    void search_edgeNgram_testcase2() {
         //given
         SearchEngine searchEngine = SearchEngine.builder()
                 .tokenizer(new EdgeNgramTokenizer())
@@ -136,7 +136,7 @@ class EdgeNgramTokenizerTest {
     }
 
     @Test
-    public void search_edgeNgram_testcase3() {
+    void search_edgeNgram_testcase3() {
         //given
         SearchEngine searchEngine = SearchEngine.builder()
                 .tokenizer(new EdgeNgramTokenizer())
@@ -154,7 +154,7 @@ class EdgeNgramTokenizerTest {
     }
 
     @Test
-    public void search_edgeNgram_testcase4() {
+    void search_edgeNgram_testcase4() {
         //given
         SearchEngine searchEngine = SearchEngine.builder()
                 .tokenizer(new EdgeNgramTokenizer())
