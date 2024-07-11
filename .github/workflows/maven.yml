@@ -31,3 +31,8 @@ jobs:
 
       - name: Test
         run: mvn --batch-mode test
+
+      - name: Sonar
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        run: mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=search-engine_search-engine
