@@ -81,16 +81,24 @@ public class SearchEngine {
             case JUST_OPTIONAL -> results = unionSets(optionalsSet);
 
             case JUST_INCLUDES -> {
-                if (findBaseSet(includesSet).isEmpty())
+                Optional<Set<String>> includesBaseSet = findBaseSet(includesSet);
+
+                if (includesBaseSet.isEmpty())
                     return new HashSet<>();
-                results = intersectSets(findBaseSet(includesSet).get(), includesSet);
+                results = intersectSets(includesBaseSet.get(), includesSet);
             }
 
             case HAVE_OPTIONALS -> {
-                if (findBaseSet(includesSet).isEmpty())
+                Optional<Set<String>> includesBaseSet = findBaseSet(includesSet);
+
+                if (includesBaseSet.isEmpty())
                     return new HashSet<>();
-                results = intersectSets(findBaseSet(includesSet).get(), includesSet);
+                results = intersectSets(includesBaseSet.get(), includesSet);
                 results.removeIf(s -> !unionSets(optionalsSet).contains(s)); // results &= optionalIds
+            }
+
+            case EMPTY -> {
+                return new HashSet<>();
             }
         }
 
