@@ -1,7 +1,7 @@
 package search_engine.tokenizers;
 
 import com.google.common.collect.ImmutableSet;
-import org.junit.jupiter.api.Assertions;
+import static org.assertj.core.api.Assertions.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import search_engine.Document;
@@ -67,17 +67,15 @@ class EdgeNgramTokenizerTest {
 
         // then
 
-        Assertions.assertNotNull(actual1);
-        Assertions.assertNotNull(actual2);
-        Assertions.assertNotNull(actual3);
-        Assertions.assertNotNull(actual4);
+        assertThat(actual1).isNotNull();
+        assertThat(actual2).isNotNull();
+        assertThat(actual3).isNotNull();
+        assertThat(actual4).isNotNull();
 
-        Assertions.assertEquals(excepted1, actual1);
-        Assertions.assertEquals(excepted2, actual2);
-        Assertions.assertEquals(excepted3, actual3);
-        Assertions.assertEquals(excepted4, actual4);
-
-
+        assertThat(actual1).isEqualTo(excepted1);
+        assertThat(actual2).isEqualTo(excepted2);
+        assertThat(actual3).isEqualTo(excepted3);
+        assertThat(actual4).isEqualTo(excepted4);
     }
 
 
@@ -95,8 +93,8 @@ class EdgeNgramTokenizerTest {
         Set<String> results = searchEngine.search(query);
 
         //then
-        Assertions.assertNotNull(results);
-        Assertions.assertEquals(expected, results);
+        assertThat(results).isNotNull();
+        assertThat(results).isEqualTo(expected);
     }
 
     @Test
@@ -113,8 +111,8 @@ class EdgeNgramTokenizerTest {
         Set<String> results = searchEngine.search(query);
 
         //then
-        Assertions.assertNotNull(results);
-        Assertions.assertEquals(expected, results);
+        assertThat(results).isNotNull();
+        assertThat(results).isEqualTo(expected);
     }
 
     @Test
@@ -131,8 +129,8 @@ class EdgeNgramTokenizerTest {
         Set<String> results = searchEngine.search(query);
 
         //then
-        Assertions.assertNotNull(results);
-        Assertions.assertEquals(expected, results);
+        assertThat(results).isNotNull();
+        assertThat(results).isEqualTo(expected);
     }
 
     @Test
@@ -149,9 +147,7 @@ class EdgeNgramTokenizerTest {
         Set<String> results = searchEngine.search(query);
 
         //then
-        Assertions.assertNotNull(results);
-        Assertions.assertEquals(expected, results);
+        assertThat(results).isNotNull();
+        assertThat(results).isEqualTo(expected);
     }
-
-
 }

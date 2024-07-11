@@ -1,7 +1,7 @@
 package search_engine;
 
 import com.google.common.collect.ImmutableSet;
-import org.junit.jupiter.api.Assertions;
+import static org.assertj.core.api.Assertions.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -48,8 +48,8 @@ public class SearchEngineSearchTest {
         Set<String> results = searchEngine.search(query);
 
         //then
-        Assertions.assertNotNull(results);
-        Assertions.assertEquals(expected, results);
+        assertThat(results).isNotNull();
+        assertThat(results).isEqualTo(expected);
     }
 
 
@@ -63,8 +63,8 @@ public class SearchEngineSearchTest {
         Set<String> results = searchEngine.search(query);
 
         //then
-        Assertions.assertNotNull(results);
-        Assertions.assertEquals(expected, results);
+        assertThat(results).isNotNull();
+        assertThat(results).isEqualTo(expected);
     }
 
     @Test
@@ -77,8 +77,8 @@ public class SearchEngineSearchTest {
         Set<String> results = searchEngine.search(query);
 
         //then
-        Assertions.assertNotNull(results);
-        Assertions.assertEquals(expected, results);
+        assertThat(results).isNotNull();
+        assertThat(results).isEqualTo(expected);
     }
 
     @Test
@@ -91,8 +91,8 @@ public class SearchEngineSearchTest {
         Set<String> results = searchEngine.search(query);
 
         //then
-        Assertions.assertNotNull(results);
-        Assertions.assertEquals(expected, results);
+        assertThat(results).isNotNull();
+        assertThat(results).isEqualTo(expected);
     }
 
     @Test
@@ -105,8 +105,8 @@ public class SearchEngineSearchTest {
         Set<String> results = searchEngine.search(query);
 
         //then
-        Assertions.assertNotNull(results);
-        Assertions.assertEquals(expected, results);
+        assertThat(results).isNotNull();
+        assertThat(results).isEqualTo(expected);
     }
 
     @Test
@@ -119,8 +119,8 @@ public class SearchEngineSearchTest {
         Set<String> results = searchEngine.search(query);
 
         //then
-        Assertions.assertNotNull(results);
-        Assertions.assertEquals(expected, results);
+        assertThat(results).isNotNull();
+        assertThat(results).isEqualTo(expected);
     }
 
 
@@ -134,8 +134,8 @@ public class SearchEngineSearchTest {
         Set<String> results = searchEngine.search(query);
 
         //then
-        Assertions.assertNotNull(results);
-        Assertions.assertEquals(expected, results);
+        assertThat(results).isNotNull();
+        assertThat(results).isEqualTo(expected);
     }
 
     @Test
@@ -148,8 +148,8 @@ public class SearchEngineSearchTest {
         Set<String> results = searchEngine.search(query);
 
         //then
-        Assertions.assertNotNull(results);
-        Assertions.assertEquals(expected, results);
+        assertThat(results).isNotNull();
+        assertThat(results).isEqualTo(expected);
     }
 
 
@@ -163,8 +163,8 @@ public class SearchEngineSearchTest {
         Set<String> results = searchEngine.search(query);
 
         //then
-        Assertions.assertNotNull(results);
-        Assertions.assertEquals(expected, results);
+        assertThat(results).isNotNull();
+        assertThat(results).isEqualTo(expected);
     }
 
     @Test
@@ -185,8 +185,8 @@ public class SearchEngineSearchTest {
         Set<String> results = searchEngine.search(query);
 
         //then
-        Assertions.assertNotNull(results);
-        Assertions.assertEquals(expected, results);
+        assertThat(results).isNotNull();
+        assertThat(results).isEqualTo(expected);
     }
 
     @Test
@@ -199,8 +199,8 @@ public class SearchEngineSearchTest {
         Set<String> results = searchEngine.search(query);
 
         //then
-        Assertions.assertNotNull(results);
-        Assertions.assertEquals(expected, results);
+        assertThat(results).isNotNull();
+        assertThat(results).isEqualTo(expected);
     }
 
 
@@ -222,8 +222,8 @@ public class SearchEngineSearchTest {
         Set<String> results = searchEngine.search(query);
 
         //then
-        Assertions.assertNotNull(results);
-        Assertions.assertEquals(expected, results);
+        assertThat(results).isNotNull();
+        assertThat(results).isEqualTo(expected);
     }
 
     @Test
@@ -244,9 +244,7 @@ public class SearchEngineSearchTest {
         Set<String> results = searchEngine.search(query);
 
         //then
-        Assertions.assertNotNull(results);
-        Assertions.assertEquals(expected, results);
+        assertThat(results).isNotNull();
+        assertThat(results).isEqualTo(expected);
     }
-
-
 }

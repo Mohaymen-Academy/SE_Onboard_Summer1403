@@ -11,8 +11,8 @@ import search_engine.normalizers.Normalizer;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.mockito.Mockito.*;
+import static org.assertj.core.api.Assertions.*;
 
 @ExtendWith(MockitoExtension.class)
 class SearchEngineAddDocTest {
@@ -27,8 +27,7 @@ class SearchEngineAddDocTest {
                 .build();
 
         //then
-        assertDoesNotThrow(() -> searchEngine.addDocument(null),
-                "addData should not throw NullPointerException");
+        assertThatCode(() -> searchEngine.addDocument(null)).doesNotThrowAnyException();
     }
 
     @Test
