@@ -12,7 +12,7 @@ class SearchEngineSearchTest {
     SearchEngine searchEngine;
 
     @BeforeEach
-    public void setup() {
+    void setup() {
         searchEngine = SearchEngine.builder().build();
 
         List<Document> documents = List.of(
