@@ -30,16 +30,17 @@ public class FileMain {
     }
 
     private static List<Document> getDocuments(List<File> files) {
-        List<Document> documents = new ArrayList<>();
-        for (File file : files) {
-            String content = FileUtilities.readFileContent(file);
-            Document document = Document.builder()
-                    .id(file.getName())
-                    .content(content)
-                    .build();
-            documents.add(document);
-        }
-        return documents;
+        return files.stream()
+                .map(FileMain::fileToDocument)
+                .toList();
+    }
+
+    private static Document fileToDocument(File file) {
+        String content = FileUtilities.readFileContent(file);
+        return Document.builder()
+                .id(file.getName())
+                .content(content)
+                .build();
     }
 
     static void handleInputs(SearchEngine searchEngine) {
