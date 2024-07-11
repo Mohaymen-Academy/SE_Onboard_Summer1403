@@ -9,11 +9,13 @@ import java.util.List;
 import java.util.Set;
 
 public class SearchEngineSearchTest {
-    List<Document> documents;
+    SearchEngine searchEngine;
 
     @BeforeEach
     public void setup() {
-        documents = List.of(
+        searchEngine = SearchEngine.builder().build();
+
+        List<Document> documents = List.of(
                 Document.builder()
                         .id("1")
                         .content("some random 6 contents")
@@ -24,23 +26,21 @@ public class SearchEngineSearchTest {
                         .build(),
                 Document.builder()
                         .id("3")
-                        .content("this ,\n" +
-                                "is a test string")
+                        .content("this ,\n" + "is a test string")
                         .build(),
                 Document.builder()
                         .id("4")
-                        .content("other test\n" +
-                                "for testing")
+                        .content("other test\n" + "for testing")
                         .build()
         );
+
+        documents.forEach(searchEngine::addDocument);
     }
 
 
     @Test
     public void search_nullInput() {
         //given
-        SearchEngine searchEngine = SearchEngine.builder().build();
-        documents.forEach(searchEngine::addDocument);
         String query = "";
         Set<String> expected = ImmutableSet.of();
 
@@ -56,8 +56,6 @@ public class SearchEngineSearchTest {
     @Test
     public void search_testcase1() {
         //given
-        SearchEngine searchEngine = SearchEngine.builder().build();
-        documents.forEach(searchEngine::addDocument);
         String query = "some";
         Set<String> expected = ImmutableSet.of("1", "2");
 
@@ -72,8 +70,6 @@ public class SearchEngineSearchTest {
     @Test
     public void search_testcase2() {
         //given
-        SearchEngine searchEngine = SearchEngine.builder().build();
-        documents.forEach(searchEngine::addDocument);
         String query = "+other +random";
         Set<String> expected = ImmutableSet.of("1", "2", "4");
 
@@ -88,8 +84,6 @@ public class SearchEngineSearchTest {
     @Test
     public void search_testcase3() {
         //given
-        SearchEngine searchEngine = SearchEngine.builder().build();
-        documents.forEach(searchEngine::addDocument);
         String query = "-for +other +random";
         Set<String> expected = ImmutableSet.of("1", "2");
 
@@ -104,8 +98,6 @@ public class SearchEngineSearchTest {
     @Test
     public void search_testcase4() {
         //given
-        SearchEngine searchEngine = SearchEngine.builder().build();
-        documents.forEach(searchEngine::addDocument);
         String query = "-for";
         Set<String> expected = ImmutableSet.of("1", "2", "3");
 
@@ -120,8 +112,6 @@ public class SearchEngineSearchTest {
     @Test
     public void search_testcase5() {
         //given
-        SearchEngine searchEngine = SearchEngine.builder().build();
-        documents.forEach(searchEngine::addDocument);
         String query = "+some contents -other";
         Set<String> expected = ImmutableSet.of("1");
 
@@ -137,8 +127,6 @@ public class SearchEngineSearchTest {
     @Test
     public void search_testcase6() {
         //given
-        SearchEngine searchEngine = SearchEngine.builder().build();
-        documents.forEach(searchEngine::addDocument);
         String query = "keyboard";
         Set<String> expected = ImmutableSet.of();
 
@@ -153,8 +141,6 @@ public class SearchEngineSearchTest {
     @Test
     public void search_testcase7() {
         //given
-        SearchEngine searchEngine = SearchEngine.builder().build();
-        documents.forEach(searchEngine::addDocument);
         String query = "for is";
         Set<String> expected = ImmutableSet.of();
 
@@ -170,8 +156,6 @@ public class SearchEngineSearchTest {
     @Test
     public void search_testcase8() {
         //given
-        SearchEngine searchEngine = SearchEngine.builder().build();
-        documents.forEach(searchEngine::addDocument);
         String query = "other test";
         Set<String> expected = ImmutableSet.of("4");
 
@@ -187,15 +171,13 @@ public class SearchEngineSearchTest {
     public void search_testcase9() {
 
         //given
-        documents.add(
+        searchEngine.addDocument(
                 Document.builder()
                         .id("")
-                        .content("hello ,\n" +
-                                "we can test empty id ?")
+                        .content("hello ,\n" + "we can test empty id ?")
                         .build()
         );
-        SearchEngine searchEngine = SearchEngine.builder().build();
-        documents.forEach(searchEngine::addDocument);
+
         String query = "can";
         Set<String> expected = ImmutableSet.of("");
 
@@ -210,8 +192,6 @@ public class SearchEngineSearchTest {
     @Test
     public void search_testcase10() {
         //given
-        SearchEngine searchEngine = SearchEngine.builder().build();
-        documents.forEach(searchEngine::addDocument);
         String query = "+can";
         Set<String> expected = ImmutableSet.of();
 
@@ -228,14 +208,13 @@ public class SearchEngineSearchTest {
     public void search_testcase11() {
 
         //given
-        documents.add(
+        searchEngine.addDocument(
                 Document.builder()
                         .id("")
                         .content(null)
                         .build()
         );
-        SearchEngine searchEngine = SearchEngine.builder().build();
-        documents.forEach(searchEngine::addDocument);
+
         String query = "can";
         Set<String> expected = ImmutableSet.of();
 
@@ -251,14 +230,13 @@ public class SearchEngineSearchTest {
     public void search_testcase12() {
 
         //given
-        documents.add(
+        searchEngine.addDocument(
                 Document.builder()
                         .id("7")
                         .content("")
                         .build()
         );
-        SearchEngine searchEngine = SearchEngine.builder().build();
-        documents.forEach(searchEngine::addDocument);
+
         String query = "can";
         Set<String> expected = ImmutableSet.of();
 
