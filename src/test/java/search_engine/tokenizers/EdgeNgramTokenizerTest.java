@@ -80,7 +80,7 @@ class EdgeNgramTokenizerTest {
 
 
     @Test
-    void search_edgeNgram_testcase1() {
+    void search_edgeNgram_oneLetter() {
         //given
         SearchEngine searchEngine = SearchEngine.builder()
                 .tokenizer(new EdgeNgramTokenizer())
@@ -98,7 +98,7 @@ class EdgeNgramTokenizerTest {
     }
 
     @Test
-    void search_edgeNgram_testcase2() {
+    void search_edgeNgram_completeName() {
         //given
         SearchEngine searchEngine = SearchEngine.builder()
                 .tokenizer(new EdgeNgramTokenizer())
@@ -116,7 +116,7 @@ class EdgeNgramTokenizerTest {
     }
 
     @Test
-    void search_edgeNgram_testcase3() {
+    void search_edgeNgram_emptyString() {
         //given
         SearchEngine searchEngine = SearchEngine.builder()
                 .tokenizer(new EdgeNgramTokenizer())
@@ -134,7 +134,7 @@ class EdgeNgramTokenizerTest {
     }
 
     @Test
-    void search_edgeNgram_testcase4() {
+    void search_edgeNgram_inputString_emptyResult() {
         //given
         SearchEngine searchEngine = SearchEngine.builder()
                 .tokenizer(new EdgeNgramTokenizer())

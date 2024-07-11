@@ -54,7 +54,7 @@ class SearchEngineSearchTest {
 
 
     @Test
-    void search_testcase1() {
+    void search_oneInclude() {
         //given
         String query = "some";
         Set<String> expected = ImmutableSet.of("1", "2");
@@ -68,7 +68,7 @@ class SearchEngineSearchTest {
     }
 
     @Test
-    void search_testcase2() {
+    void search_twoOptionals() {
         //given
         String query = "+other +random";
         Set<String> expected = ImmutableSet.of("1", "2", "4");
@@ -82,7 +82,7 @@ class SearchEngineSearchTest {
     }
 
     @Test
-    void search_testcase3() {
+    void search_twoOptionals_oneExclude() {
         //given
         String query = "-for +other +random";
         Set<String> expected = ImmutableSet.of("1", "2");
@@ -96,7 +96,7 @@ class SearchEngineSearchTest {
     }
 
     @Test
-    void search_testcase4() {
+    void search_OneExclude() {
         //given
         String query = "-for";
         Set<String> expected = ImmutableSet.of("1", "2", "3");
@@ -110,7 +110,7 @@ class SearchEngineSearchTest {
     }
 
     @Test
-    void search_testcase5() {
+    void search_oneInclude_oneOptional_oneExclude() {
         //given
         String query = "+some contents -other";
         Set<String> expected = ImmutableSet.of("1");
@@ -125,7 +125,7 @@ class SearchEngineSearchTest {
 
 
     @Test
-    void search_testcase6() {
+    void search_notFound_oneInclude() {
         //given
         String query = "keyboard";
         Set<String> expected = ImmutableSet.of();
@@ -139,7 +139,7 @@ class SearchEngineSearchTest {
     }
 
     @Test
-    void search_testcase7() {
+    void search_notFound_twoIncludes() {
         //given
         String query = "for is";
         Set<String> expected = ImmutableSet.of();
@@ -154,7 +154,7 @@ class SearchEngineSearchTest {
 
 
     @Test
-    void search_testcase8() {
+    void search_twoIncludes() {
         //given
         String query = "other test";
         Set<String> expected = ImmutableSet.of("4");
@@ -168,7 +168,7 @@ class SearchEngineSearchTest {
     }
 
     @Test
-    void search_testcase9() {
+    void search_emptyId() {
 
         //given
         searchEngine.addDocument(
@@ -190,7 +190,7 @@ class SearchEngineSearchTest {
     }
 
     @Test
-    void search_testcase10() {
+    void search_notFound_oneOptional() {
         //given
         String query = "+can";
         Set<String> expected = ImmutableSet.of();
@@ -205,7 +205,7 @@ class SearchEngineSearchTest {
 
 
     @Test
-    void search_testcase11() {
+    void search_emptyId_nullContent() {
 
         //given
         searchEngine.addDocument(
@@ -227,7 +227,7 @@ class SearchEngineSearchTest {
     }
 
     @Test
-    void search_testcase12() {
+    void search_emptyContent() {
 
         //given
         searchEngine.addDocument(
