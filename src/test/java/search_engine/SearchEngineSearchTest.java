@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test;
 import java.util.List;
 import java.util.Set;
 
-public class SearchEngineSearchTest {
+class SearchEngineSearchTest {
     SearchEngine searchEngine;
 
     @BeforeEach
@@ -39,7 +39,7 @@ public class SearchEngineSearchTest {
 
 
     @Test
-    public void search_nullInput() {
+    void search_nullInput() {
         //given
         String query = "";
         Set<String> expected = ImmutableSet.of();
@@ -54,7 +54,7 @@ public class SearchEngineSearchTest {
 
 
     @Test
-    public void search_testcase1() {
+    void search_testcase1() {
         //given
         String query = "some";
         Set<String> expected = ImmutableSet.of("1", "2");
@@ -68,7 +68,7 @@ public class SearchEngineSearchTest {
     }
 
     @Test
-    public void search_testcase2() {
+    void search_testcase2() {
         //given
         String query = "+other +random";
         Set<String> expected = ImmutableSet.of("1", "2", "4");
@@ -82,7 +82,7 @@ public class SearchEngineSearchTest {
     }
 
     @Test
-    public void search_testcase3() {
+    void search_testcase3() {
         //given
         String query = "-for +other +random";
         Set<String> expected = ImmutableSet.of("1", "2");
@@ -96,7 +96,7 @@ public class SearchEngineSearchTest {
     }
 
     @Test
-    public void search_testcase4() {
+    void search_testcase4() {
         //given
         String query = "-for";
         Set<String> expected = ImmutableSet.of("1", "2", "3");
@@ -110,7 +110,7 @@ public class SearchEngineSearchTest {
     }
 
     @Test
-    public void search_testcase5() {
+    void search_testcase5() {
         //given
         String query = "+some contents -other";
         Set<String> expected = ImmutableSet.of("1");
@@ -125,7 +125,7 @@ public class SearchEngineSearchTest {
 
 
     @Test
-    public void search_testcase6() {
+    void search_testcase6() {
         //given
         String query = "keyboard";
         Set<String> expected = ImmutableSet.of();
@@ -139,7 +139,7 @@ public class SearchEngineSearchTest {
     }
 
     @Test
-    public void search_testcase7() {
+    void search_testcase7() {
         //given
         String query = "for is";
         Set<String> expected = ImmutableSet.of();
@@ -154,7 +154,7 @@ public class SearchEngineSearchTest {
 
 
     @Test
-    public void search_testcase8() {
+    void search_testcase8() {
         //given
         String query = "other test";
         Set<String> expected = ImmutableSet.of("4");
@@ -168,7 +168,7 @@ public class SearchEngineSearchTest {
     }
 
     @Test
-    public void search_testcase9() {
+    void search_testcase9() {
 
         //given
         searchEngine.addDocument(
@@ -190,7 +190,7 @@ public class SearchEngineSearchTest {
     }
 
     @Test
-    public void search_testcase10() {
+    void search_testcase10() {
         //given
         String query = "+can";
         Set<String> expected = ImmutableSet.of();
@@ -205,7 +205,7 @@ public class SearchEngineSearchTest {
 
 
     @Test
-    public void search_testcase11() {
+    void search_testcase11() {
 
         //given
         searchEngine.addDocument(
@@ -227,7 +227,7 @@ public class SearchEngineSearchTest {
     }
 
     @Test
-    public void search_testcase12() {
+    void search_testcase12() {
 
         //given
         searchEngine.addDocument(

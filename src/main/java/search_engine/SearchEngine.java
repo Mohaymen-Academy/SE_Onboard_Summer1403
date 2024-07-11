@@ -2,6 +2,8 @@ package search_engine;
 
 import com.google.common.collect.ImmutableSet;
 import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
+import search_engine.enums.Status;
 import search_engine.normalizers.Normalizer;
 import search_engine.query_decoder.CommonQueryDecoder;
 import search_engine.query_decoder.Query;
@@ -34,15 +36,14 @@ public class SearchEngine {
     public void addDocument(Document document) {
         if (document == null) return;
         docs.add(document);
-        if (document.getContent() != null && !document.getContent().isEmpty())
+        if (!StringUtils.isEmpty(document.getContent())) {
             indexDocument(document.getId(), prepareWords(document.getContent()));
+        }
     }
 
     private List<String> prepareWords(String content) {
         List<String> words = tokenizer.tokenize(content);
-        return words.stream()
-                .map(this::applyNormalizers)
-                .toList();
+        return words.stream().map(this::applyNormalizers).toList();
     }
 
     private String applyNormalizers(String content) {
@@ -52,9 +53,7 @@ public class SearchEngine {
     }
 
     private void indexDocument(String id, List<String> words) {
-        words.stream()
-                .filter(word -> !word.isEmpty())
-                .forEach(word -> invertedIndex.computeIfAbsent(word, k -> new HashSet<>()).add(id));
+        words.stream().filter(word -> !word.isEmpty()).forEach(word -> invertedIndex.computeIfAbsent(word, k -> new HashSet<>()).add(id));
     }
 
     public ImmutableSet<String> search(String queryString) {
@@ -63,87 +62,80 @@ public class SearchEngine {
     }
 
     private Set<String> handleQuery(Query query) {
+        Status status = query.getStatus();
         Set<String> results = new HashSet<>();
+        List<Set<String>> includesSet = convertTokensToSetOfDocsId(query.includes());
+        List<Set<String>> optionalsSet = convertTokensToSetOfDocsId(query.optionals());
+        List<Set<String>> excludesSet = convertTokensToSetOfDocsId(query.excludes());
 
-        if (CollectionUtils.isEmpty(query.includes())) {
-            if (CollectionUtils.isEmpty(query.optionals())) {
-                if (!CollectionUtils.isEmpty(query.excludes()))
-                    results = docs.stream()
-                            .map(Document::getId)
-                            .collect(Collectors.toSet());
-            } else results = unionSets(findMatchedDocs(query.optionals()));
-        } else {
-            results = intersectIncludes(query.includes());
-            if (!CollectionUtils.isEmpty(query.optionals())) {
-                Set<String> optionalIds = unionSets(findMatchedDocs(query.optionals()));
-                results.removeIf(s -> !optionalIds.contains(s)); // results &= optionalIds
+        switch (status) {
+            case JUST_EXCLUDES -> results = docs.stream().map(Document::getId).collect(Collectors.toSet());
+
+            case JUST_OPTIONAL -> results = unionSets(optionalsSet);
+
+            case JUST_INCLUDES -> {
+                Optional<Set<String>> includesBaseSet = findBaseSet(includesSet);
+
+                if (includesBaseSet.isEmpty()) return new HashSet<>();
+                results = intersectSets(includesBaseSet.get(), includesSet);
+            }
+
+            case HAVE_OPTIONALS -> {
+                Optional<Set<String>> includesBaseSet = findBaseSet(includesSet);
+
+                if (includesBaseSet.isEmpty()) return new HashSet<>();
+                results = intersectSets(includesBaseSet.get(), includesSet);
+                results.removeIf(s -> !unionSets(optionalsSet).contains(s)); // results &= optionalIds
+            }
+
+            case EMPTY -> {
+                return new HashSet<>();
             }
         }
 
-        Set<String> excludesIds = unionSets(findMatchedDocs(query.excludes()));
-        return removeExcludes(results, excludesIds);
+        return removeSets(results, unionSets(excludesSet));
     }
 
-    private Set<String> removeExcludes(Set<String> base, Set<String> excludes) {
+
+    private List<Set<String>> convertTokensToSetOfDocsId(List<String> items) {
+        return items == null ?
+                new ArrayList<>() :
+                items.stream()
+                        .map(this::getDocsIdByWord)
+                        .toList();
+    }
+
+    private Set<String> getDocsIdByWord(String token) {
+        return invertedIndex.getOrDefault(token, new HashSet<>());
+    }
+
+    private Set<String> removeSets(Set<String> base, Set<String> excludes) {
         Set<String> result = new HashSet<>();
-        base.stream()
-                .parallel()
-                .filter(id -> !excludes.contains(id))
-                .forEach(result::add);
+        base.stream().parallel().filter(id -> !excludes.contains(id)).forEach(result::add);
         return result;
     }
 
-    private Set<String> intersectIncludes(List<String> includes) {
-        Optional<Set<String>> baseWordOptional = findBaseSet(findMatchedDocs(includes));
-        if (baseWordOptional.isEmpty())
-            return new HashSet<>();
-
-        Set<String> result = new HashSet<>(baseWordOptional.get());
-        return intersectSets(result, findMatchedDocs(includes));
-    }
-
-    private List<Set<String>> findMatchedDocs(List<String> items) {
-        return items.stream()
-                .map(s -> invertedIndex.getOrDefault(s, new HashSet<>()))
-                .toList();
-    }
 
     private Set<String> intersectSets(Set<String> base, List<Set<String>> sets) {
         for (Set<String> set : sets) {
             base.removeIf(s -> !set.contains(s)); // result &= foundIds
-            if (CollectionUtils.isEmpty(base))
-                break;
+            if (CollectionUtils.isEmpty(base)) break;
         }
         return base;
     }
 
+
     private Set<String> unionSets(List<Set<String>> sets) {
-
-        Set<String> result = new HashSet<>();
-
-        sets.stream()
-                .filter(Objects::nonNull)
-                .forEach(result::addAll);
-
-        return result;
+        return sets.stream()
+                .flatMap(Collection::stream)
+                .collect(Collectors.toSet());
     }
+
 
     private Optional<Set<String>> findBaseSet(List<Set<String>> sets) {
-        int minSize = Integer.MAX_VALUE;
-        Set<String> baseSet = new HashSet<>();
-
-        for (Set<String> set : sets) {
-            if (CollectionUtils.isEmpty(set)) return Optional.empty();
-
-            int size = set.size();
-            if (size < minSize) {
-                minSize = size;
-                baseSet = set;
-            }
-        }
-
-        return Optional.of(baseSet);
+        return sets.stream().min(Comparator.comparingInt(Set::size));
     }
+
 
     public static class SearchEngineBuilder {
         private List<Normalizer> normalizers;
