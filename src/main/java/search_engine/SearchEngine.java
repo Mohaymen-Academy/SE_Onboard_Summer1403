@@ -43,9 +43,7 @@ public class SearchEngine {
 
     private List<String> prepareWords(String content) {
         List<String> words = tokenizer.tokenize(content);
-        return words.stream()
-                .map(this::applyNormalizers)
-                .toList();
+        return words.stream().map(this::applyNormalizers).toList();
     }
 
     private String applyNormalizers(String content) {
@@ -55,9 +53,7 @@ public class SearchEngine {
     }
 
     private void indexDocument(String id, List<String> words) {
-        words.stream()
-                .filter(word -> !word.isEmpty())
-                .forEach(word -> invertedIndex.computeIfAbsent(word, k -> new HashSet<>()).add(id));
+        words.stream().filter(word -> !word.isEmpty()).forEach(word -> invertedIndex.computeIfAbsent(word, k -> new HashSet<>()).add(id));
     }
 
     public ImmutableSet<String> search(String queryString) {
@@ -73,26 +69,21 @@ public class SearchEngine {
         List<Set<String>> excludesSet = convertTokensToSetOfDocsId(query.excludes());
 
         switch (status) {
-            case JUST_EXCLUDES -> results = docs
-                    .stream()
-                    .map(Document::getId)
-                    .collect(Collectors.toSet());
+            case JUST_EXCLUDES -> results = docs.stream().map(Document::getId).collect(Collectors.toSet());
 
             case JUST_OPTIONAL -> results = unionSets(optionalsSet);
 
             case JUST_INCLUDES -> {
                 Optional<Set<String>> includesBaseSet = findBaseSet(includesSet);
 
-                if (includesBaseSet.isEmpty())
-                    return new HashSet<>();
+                if (includesBaseSet.isEmpty()) return new HashSet<>();
                 results = intersectSets(includesBaseSet.get(), includesSet);
             }
 
             case HAVE_OPTIONALS -> {
                 Optional<Set<String>> includesBaseSet = findBaseSet(includesSet);
 
-                if (includesBaseSet.isEmpty())
-                    return new HashSet<>();
+                if (includesBaseSet.isEmpty()) return new HashSet<>();
                 results = intersectSets(includesBaseSet.get(), includesSet);
                 results.removeIf(s -> !unionSets(optionalsSet).contains(s)); // results &= optionalIds
             }
@@ -120,10 +111,7 @@ public class SearchEngine {
 
     private Set<String> removeSets(Set<String> base, Set<String> excludes) {
         Set<String> result = new HashSet<>();
-        base.stream()
-                .parallel()
-                .filter(id -> !excludes.contains(id))
-                .forEach(result::add);
+        base.stream().parallel().filter(id -> !excludes.contains(id)).forEach(result::add);
         return result;
     }
 
@@ -131,28 +119,21 @@ public class SearchEngine {
     private Set<String> intersectSets(Set<String> base, List<Set<String>> sets) {
         for (Set<String> set : sets) {
             base.removeIf(s -> !set.contains(s)); // result &= foundIds
-            if (CollectionUtils.isEmpty(base))
-                break;
+            if (CollectionUtils.isEmpty(base)) break;
         }
         return base;
     }
 
 
     private Set<String> unionSets(List<Set<String>> sets) {
-
-        Set<String> result = new HashSet<>();
-
-        sets.stream()
-                .filter(Objects::nonNull)
-                .forEach(result::addAll);
-
-        return result;
+        return sets.stream()
+                .flatMap(Collection::stream)
+                .collect(Collectors.toSet());
     }
 
 
     private Optional<Set<String>> findBaseSet(List<Set<String>> sets) {
-        return sets.stream()
-                .min(Comparator.comparingInt(Set::size));
+        return sets.stream().min(Comparator.comparingInt(Set::size));
     }
 
 
