@@ -1,9 +1,9 @@
 package search_engine;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
+import org.mockito.junit.jupiter.MockitoExtension;
 import search_engine.normalizers.Normalizer;
 
 import java.util.List;
@@ -11,16 +11,11 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.mockito.Mockito.*;
 
+@ExtendWith(MockitoExtension.class)
 class SearchEngineAddDocTest {
 
     @Mock
     Normalizer normalizer;
-
-    @BeforeEach
-    public void setup() {
-        MockitoAnnotations.openMocks(this);
-    }
-
 
     @Test
     void addDocument_givenNullInput_notThrowException() {
