@@ -8,15 +8,14 @@ import search_engine.tokenizers.SpaceTokenizer;
 
 import java.util.List;
 
-class SearchEngineBuilderTest {
+public class SearchEngineBuilderTest {
     @Test
-    public void constructor_givenNoArgument_notThrownException() {
+    public void test_constructor_givenNoArgument_notThrownException() {
         assertThatCode(() -> SearchEngine.builder().build()).doesNotThrowAnyException();
-
     }
 
     @Test
-    public void constructor_givenNullArgument_notThrownException() {
+    public void test_constructor_givenNullArgument_notThrownException() {
         assertThatCode(() -> SearchEngine.builder()
                         .normalizers(null)
                         .queryDecoder(null)
@@ -26,7 +25,7 @@ class SearchEngineBuilderTest {
     }
 
     @Test
-    public void constructor_givenArgs_createInstance() {
+    public void test_constructor_givenArgs_createInstance() {
         Object object = SearchEngine.builder()
                 .normalizers(List.of(new NumberNormalizer()))
                 .queryDecoder(new CommonQueryDecoder())
