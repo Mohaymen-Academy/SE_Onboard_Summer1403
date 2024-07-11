@@ -29,11 +29,11 @@ class SearchEngineBuilderTest {
 
     @Test
     public void constructor_givenArgs_createInstance() {
-        SearchEngine searchEngine = SearchEngine.builder()
+        Object object = SearchEngine.builder()
                 .normalizers(List.of(new NumberNormalizer()))
                 .queryDecoder(new CommonQueryDecoder())
                 .tokenizer(new SpaceTokenizer())
                 .build();
-        Assertions.assertInstanceOf(SearchEngine.class, searchEngine);
+        Assertions.assertInstanceOf(SearchEngine.class, object);
     }
 }
